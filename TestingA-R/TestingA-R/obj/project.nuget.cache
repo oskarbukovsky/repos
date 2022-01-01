@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "+IFlDZhBCEGusAlSZSBK06WRaznbCzkIrQfftFTHFsM/O4zkU/aDBHwgAU38RnYPzCXd0erGoQEJKChAEVKb0Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Oskar\\source\\repos\\TestingA-R\\TestingA-R\\TestingA-R.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Oskar\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,15 @@
+C:\Users\Oskar\source\repos\Testing1\Testing1\bin\Debug\net6.0\Testing1.exe
+C:\Users\Oskar\source\repos\Testing1\Testing1\bin\Debug\net6.0\Testing1.deps.json
+C:\Users\Oskar\source\repos\Testing1\Testing1\bin\Debug\net6.0\Testing1.runtimeconfig.json
+C:\Users\Oskar\source\repos\Testing1\Testing1\bin\Debug\net6.0\Testing1.dll
+C:\Users\Oskar\source\repos\Testing1\Testing1\bin\Debug\net6.0\ref\Testing1.dll
+C:\Users\Oskar\source\repos\Testing1\Testing1\bin\Debug\net6.0\Testing1.pdb
+C:\Users\Oskar\source\repos\Testing1\Testing1\obj\Debug\net6.0\Testing1.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\Testing1\Testing1\obj\Debug\net6.0\Testing1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\Testing1\Testing1\obj\Debug\net6.0\Testing1.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\Testing1\Testing1\obj\Debug\net6.0\Testing1.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\Testing1\Testing1\obj\Debug\net6.0\Testing1.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\Testing1\Testing1\obj\Debug\net6.0\Testing1.dll
+C:\Users\Oskar\source\repos\Testing1\Testing1\obj\Debug\net6.0\ref\Testing1.dll
+C:\Users\Oskar\source\repos\Testing1\Testing1\obj\Debug\net6.0\Testing1.pdb
+C:\Users\Oskar\source\repos\Testing1\Testing1\obj\Debug\net6.0\Testing1.genruntimeconfig.cache

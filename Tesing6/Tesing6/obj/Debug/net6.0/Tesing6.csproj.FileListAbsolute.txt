@@ -1,0 +1,15 @@
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\bin\Debug\net6.0\Tesing6.exe
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\bin\Debug\net6.0\Tesing6.deps.json
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\bin\Debug\net6.0\Tesing6.runtimeconfig.json
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\bin\Debug\net6.0\Tesing6.dll
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\bin\Debug\net6.0\ref\Tesing6.dll
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\bin\Debug\net6.0\Tesing6.pdb
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\obj\Debug\net6.0\Tesing6.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\obj\Debug\net6.0\Tesing6.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\obj\Debug\net6.0\Tesing6.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\obj\Debug\net6.0\Tesing6.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\obj\Debug\net6.0\Tesing6.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\obj\Debug\net6.0\Tesing6.dll
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\obj\Debug\net6.0\ref\Tesing6.dll
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\obj\Debug\net6.0\Tesing6.pdb
+C:\Users\Oskar\source\repos\Tesing6\Tesing6\obj\Debug\net6.0\Tesing6.genruntimeconfig.cache

@@ -1,0 +1,17 @@
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\bin\Debug\net6.0\TestingA-R.exe
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\bin\Debug\net6.0\TestingA-R.deps.json
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\bin\Debug\net6.0\TestingA-R.runtimeconfig.json
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\bin\Debug\net6.0\TestingA-R.dll
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\bin\Debug\net6.0\ref\TestingA-R.dll
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\bin\Debug\net6.0\TestingA-R.pdb
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net6.0\TestingA-R.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net6.0\TestingA-R.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net6.0\TestingA-R.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net6.0\TestingA-R.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net6.0\TestingA-R.dll
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net6.0\ref\TestingA-R.dll
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net6.0\TestingA-R.pdb
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net6.0\TestingA-R.genruntimeconfig.cache
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net6.0\TestingA-R.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net6.0\TestingA-R.csproj.CopyComplete
