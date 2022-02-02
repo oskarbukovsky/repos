@@ -60,7 +60,7 @@ namespace TraderMadeWebSocketTest
             CancellationTokenSource source = new CancellationTokenSource();
             try
             {
-                await connection.ConnectAsync(new Uri("ws://10.0.0.64:81"), CancellationToken.None);
+                await connection.ConnectAsync(new Uri("ws://10.0.0.111:81"), CancellationToken.None);
                 Console.WriteLine("\nServer reached!");
             }
             catch

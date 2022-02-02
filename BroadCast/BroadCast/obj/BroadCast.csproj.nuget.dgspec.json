@@ -1,0 +1,53 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Oskar\\source\\repos\\BroadCast\\BroadCast\\BroadCast.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Oskar\\source\\repos\\BroadCast\\BroadCast\\BroadCast.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Oskar\\source\\repos\\BroadCast\\BroadCast\\BroadCast.csproj",
+        "projectName": "BroadCast",
+        "projectPath": "C:\\Users\\Oskar\\source\\repos\\BroadCast\\BroadCast\\BroadCast.csproj",
+        "packagesPath": "C:\\Users\\Oskar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Oskar\\source\\repos\\BroadCast\\BroadCast\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Oskar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net45"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net45": {
+            "targetAlias": "net45",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net45": {
+          "targetAlias": "net45",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

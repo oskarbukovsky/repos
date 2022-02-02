@@ -1,0 +1,17 @@
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\obj\Debug\net6.0\p2p-first.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\obj\Debug\net6.0\p2p-first.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\obj\Debug\net6.0\p2p-first.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\obj\Debug\net6.0\p2p-first.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\obj\Debug\net6.0\p2p-first.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\bin\Debug\net6.0\p2p-first.exe
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\bin\Debug\net6.0\p2p-first.deps.json
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\bin\Debug\net6.0\p2p-first.runtimeconfig.json
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\bin\Debug\net6.0\p2p-first.dll
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\bin\Debug\net6.0\ref\p2p-first.dll
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\bin\Debug\net6.0\p2p-first.pdb
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\obj\Debug\net6.0\p2p-first.csproj.CopyComplete
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\obj\Debug\net6.0\p2p-first.dll
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\obj\Debug\net6.0\ref\p2p-first.dll
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\obj\Debug\net6.0\p2p-first.pdb
+C:\Users\Oskar\source\repos\p2p-first\p2p-first\obj\Debug\net6.0\p2p-first.genruntimeconfig.cache

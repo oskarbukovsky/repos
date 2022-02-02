@@ -1,0 +1,5 @@
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net5.0\TestingA-R.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net5.0\TestingA-R.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net5.0\TestingA-R.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net5.0\TestingA-R.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\TestingA-R\TestingA-R\obj\Debug\net5.0\TestingA-R.csproj.CoreCompileInputs.cache

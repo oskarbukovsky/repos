@@ -15,8 +15,8 @@ namespace TraderMadeWebSocketTest
             CancellationTokenSource source = new CancellationTokenSource();
             using (var ws = new ClientWebSocket())
             {
-                await ws.ConnectAsync(new Uri("ws://10.0.0.255:81"), CancellationToken.None);
-                ws.EnableBroadcast = true;
+                await ws.ConnectAsync(new Uri("ws://10.0.0.111:81"), CancellationToken.None);
+                //ws.EnableBroadcast = true;
                 byte[] buffer = new byte[256];
                 while (ws.State == WebSocketState.Open)
                 {

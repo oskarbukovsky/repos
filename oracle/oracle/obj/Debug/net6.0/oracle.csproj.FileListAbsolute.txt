@@ -1,0 +1,5 @@
+C:\Users\Oskar\source\repos\oracle\oracle\obj\Debug\net6.0\oracle.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\oracle\oracle\obj\Debug\net6.0\oracle.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\oracle\oracle\obj\Debug\net6.0\oracle.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\oracle\oracle\obj\Debug\net6.0\oracle.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\oracle\oracle\obj\Debug\net6.0\oracle.csproj.CoreCompileInputs.cache

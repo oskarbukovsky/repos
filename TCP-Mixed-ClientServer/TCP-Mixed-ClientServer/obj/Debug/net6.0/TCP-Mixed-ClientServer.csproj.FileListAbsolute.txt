@@ -1,0 +1,4 @@
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net6.0\TCP-Mixed-ClientServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net6.0\TCP-Mixed-ClientServer.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net6.0\TCP-Mixed-ClientServer.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net6.0\TCP-Mixed-ClientServer.csproj.CoreCompileInputs.cache
