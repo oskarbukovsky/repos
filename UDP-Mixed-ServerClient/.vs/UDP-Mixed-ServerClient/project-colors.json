@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "5bfe7053-2bd9-4299-9aa1-5e0ecefc5f71": {
+      "ProjectGuid": "5bfe7053-2bd9-4299-9aa1-5e0ecefc5f71",
+      "DisplayName": "UDP-Mixed-ServerClient",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

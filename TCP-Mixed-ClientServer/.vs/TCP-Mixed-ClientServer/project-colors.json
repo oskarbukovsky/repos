@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "f17da511-3d96-4604-95be-ff960a1def6a": {
+      "ProjectGuid": "f17da511-3d96-4604-95be-ff960a1def6a",
+      "DisplayName": "TCP-Mixed-ClientServer",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Ostatní soubory",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 1
+}

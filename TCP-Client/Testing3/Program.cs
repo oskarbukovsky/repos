@@ -47,40 +47,40 @@ class Program
         }
         return true;
     }
-    public static async Task<dynamic> RecieveSocketMessage(dynamic Connection)
+    public static async Task<dynamic> RecieveSocketMessage(dynamic Server)
     {
         byte[] bytes = new byte[8192];
         try
         {
-            if (Connection.State == WebSocketState.Open || Connection.State == WebSocketState.CloseSent)
+            if (Server.State == WebSocketState.Open || Server.State == WebSocketState.CloseSent)
             {
-                var result = await Connection.ReceiveAsync(bytes, CancellationToken.None);
+                await Server.ReceiveAsync(bytes, CancellationToken.None);
             }
             else
             {
-                throw new Exception("Closed WebSocket");
+                throw new Exception("Closed");
             }
         }
         catch
         {
-            Console.WriteLine("Cannot read message!");
             Thread.Sleep(5);
+            //throw new Exception("Closed");
             return false;
         }
         Thread.Sleep(5);
         return Encoding.UTF8.GetString(bytes);
     }
-    public static async void SendSocketMessage(dynamic Connection, string input)
+    public static async void SendSocketMessage(dynamic Server, string input)
     {
         try
         {
-            if (Connection.State == WebSocketState.Open || Connection.State == WebSocketState.CloseSent)
+            if (Server.State == WebSocketState.Open || Server.State == WebSocketState.CloseSent)
             {
-                await Connection.SendAsync(Encoding.UTF8.GetBytes(input), WebSocketMessageType.Text, true, CancellationToken.None);
+                await Server.SendAsync(Encoding.UTF8.GetBytes(input), WebSocketMessageType.Text, true, CancellationToken.None);
             }
             else
             {
-                throw new Exception("Other side closed connection.");
+                throw new Exception("Closed");
             }
         }
         catch

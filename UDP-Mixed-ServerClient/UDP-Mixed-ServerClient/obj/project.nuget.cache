@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "3Ig135KdJTKaVWA7nin8eg3/g7GtmDU6TtmrsXgRXWjbnXBrG8HBXdk0+XqiWWAqhAUZAKqE0YpjR2OfQvFWbw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Oskar\\source\\repos\\UDP-Mixed-ServerClient\\UDP-Mixed-ServerClient\\UDP-Mixed-ServerClient.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Oskar\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

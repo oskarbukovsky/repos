@@ -1,0 +1,17 @@
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\bin\Debug\net6.0\UDP-Mixed-ServerClient.exe
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\bin\Debug\net6.0\UDP-Mixed-ServerClient.deps.json
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\bin\Debug\net6.0\UDP-Mixed-ServerClient.runtimeconfig.json
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\bin\Debug\net6.0\UDP-Mixed-ServerClient.dll
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\bin\Debug\net6.0\ref\UDP-Mixed-ServerClient.dll
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\bin\Debug\net6.0\UDP-Mixed-ServerClient.pdb
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\obj\Debug\net6.0\UDP-Mixed-ServerClient.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\obj\Debug\net6.0\UDP-Mixed-ServerClient.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\obj\Debug\net6.0\UDP-Mixed-ServerClient.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\obj\Debug\net6.0\UDP-Mixed-ServerClient.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\obj\Debug\net6.0\UDP-Mixed-ServerClient.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\obj\Debug\net6.0\UDP-Mixed-ServerClient.csproj.CopyComplete
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\obj\Debug\net6.0\UDP-Mixed-ServerClient.dll
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\obj\Debug\net6.0\ref\UDP-Mixed-ServerClient.dll
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\obj\Debug\net6.0\UDP-Mixed-ServerClient.pdb
+C:\Users\Oskar\source\repos\UDP-Mixed-ServerClient\UDP-Mixed-ServerClient\obj\Debug\net6.0\UDP-Mixed-ServerClient.genruntimeconfig.cache

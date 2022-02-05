@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "sTv0kU6c5v6zRXE7NhfAetEq1JAsDfyV3psuEYcEZj4FIhusHvWqVXZX7qJj3Dt0k1hf22N8KB5yZkTuTe/4Vg==",
+  "dgSpecHash": "F90ssNCZNU13MXSg0ewcY3UZ9b8NqitYFlHVp/40FI9W0SEwWDxKaWo0ORUVbb5E/QwxWBi7fTGXA/6LZPecCQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Oskar\\source\\repos\\TCP-Mixed-ClientServer\\TCP-Mixed-ClientServer\\TCP-Mixed-ClientServer.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Oskar\\.nuget\\packages\\commandlineparser\\2.8.0\\commandlineparser.2.8.0.nupkg.sha512",
+    "C:\\Users\\Oskar\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }

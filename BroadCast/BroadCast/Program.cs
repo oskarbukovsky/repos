@@ -111,8 +111,9 @@ namespace ClientServer
         {
             public static List<KnownServer> Host = new List<KnownServer>();
         }
-        public static Task StartListener(bool DEBUG = false)
+        public static void StartListener(bool DEBUG = false)
         {
+            Console.WriteLine("Test");
             UdpClient listener = new UdpClient(Global.BroadcastPort);
             IPEndPoint EndPoint = new IPEndPoint(IPAddress.Any, 0);
 
@@ -164,7 +165,7 @@ namespace ClientServer
             {
                 listener.Close();
             }
-            return Task.FromResult(true);
+            //return Task.FromResult(true);
         }
         public static void SendBroadcastMessage(ref Broadcast broadcast, BroadcastMessage message)
         {
