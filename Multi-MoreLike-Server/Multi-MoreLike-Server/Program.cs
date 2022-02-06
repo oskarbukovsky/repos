@@ -428,8 +428,15 @@ namespace Application
                         if (recieved is Tcp.HandShake)
                         {
                             Console.WriteLine("Token: {0}", recieved.Token);
-                            Tcp.SendSocketMessage(Server, recieved.Token);
+                            Tcp.SendSocketMessage(Server, "$#T-" + recieved.Token);
                             Console.WriteLine("Send");
+                            Thread.Sleep(5000);
+                            while (true)
+                            {
+                                Console.WriteLine("\nEnter your message:");
+                                var input = Tools.ReadLine();
+                                SendSocketMessage(Server, input);
+                            }
                         }
                         if (recieved is bool)
                         {
@@ -728,14 +735,14 @@ namespace Application
                     Console.WriteLine("\nTCP-Server started");
                     var Server = Tcp.Servers.Last();
                     Tcp.InitListener(Server, TcpPortPool);
-                    Task.Run(() =>
+                    /*Task.Run(() =>
                     {
                         while (true)
                         {
                             Tcp.SendSocketMessage(Server, Global.LocalHostname + "_" + DateTime.Now.ToString("HH:mm:ss"));
                             Thread.Sleep(1000);
                         }
-                    });
+                    });*/
                 });
             }
             Task.Run(() =>

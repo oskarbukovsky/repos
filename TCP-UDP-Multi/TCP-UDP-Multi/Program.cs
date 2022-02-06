@@ -414,7 +414,7 @@ namespace Application
                     string s = Encoding.UTF8.GetString(bytes);
                     if (Regex.IsMatch(s, "^GET", RegexOptions.IgnoreCase))
                     {
-                        //Console.WriteLine("=====Handshaking from client=====\n{0}", s);
+                        Console.WriteLine("=====Handshaking from client=====\n{0}", s);
 
                         string swk = Regex.Match(s, "Sec-WebSocket-Key: (.*)").Groups[1].Value.Trim();
                         string swka = swk + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";

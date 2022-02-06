@@ -410,11 +410,28 @@ namespace Application
             }
             Thread.Sleep(5);
         }
-        public static void InitListener(dynamic Server)
+        public static dynamic InitListener(dynamic Server, [Optional] string ValidToken, [Optional] string CheckToken)
         {
             var recieved = Tcp.RecieveSocketMessage(Server).Result;
             if (recieved is string)
             {
+                if (recieved.StartsWith("$#T-"))
+                {
+                    var tmp = Tools.Hash(recieved.Substring(4) + CheckToken);
+                    if (tmp == ValidToken)
+                    {
+                        Console.WriteLine("HandShake Completed\nValid connection :)");
+                        return true;
+                    }
+                    else
+                    {
+                        //TODO občas novější token než kontrolní, má být vždy handshake + starší 
+                        //Když je with "xxxxxx" prostřední v validtokens, tak je validtoken ten obrácenej
+                        tConsole.WriteLine("WRONG TOKEN!!!!!!!!!!!");
+                        return false;
+                    }
+                }
+                //Upravit aby se odesílalo v nějakým spec tvaru těch 8charakterů, regex na detekci a upravit extra output: {0}
                 Console.WriteLine("Output: {0}", recieved);
             }
             if (recieved is Tcp.HandShake)
@@ -430,6 +447,7 @@ namespace Application
                     throw new Exception("Closed");
                 }
             }
+            return true;
         }
 
         public static List<WebSocket> Servers = new List<WebSocket>();
@@ -639,7 +657,7 @@ namespace Application
             }
             return data;
         }
-        static string Hash(string input)
+        public static string Hash(string input)
         {
             var hash = SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(input));
             var stringBuilder = new StringBuilder(hash.Length * 2);
@@ -669,6 +687,7 @@ namespace Application
             //BEGIN Listener
             StartListener();
             //END Listener
+
             //BEGIN Controll
             Controll();
             //END Controll
@@ -768,10 +787,10 @@ namespace Application
                         Console.WriteLine("-----------");
                         break;
                     case ConsoleKey.T:
-                        string[] tokens = new string[Global.ValidTokens.Count];
-                        Global.ValidTokens.CopyTo(tokens);
+                        string[] tmp = new string[Global.ValidTokens.Count];
+                        Global.ValidTokens.CopyTo(tmp);
                         Console.WriteLine("\nValid tokens:");
-                        foreach (string token in tokens)
+                        foreach (string token in tmp)
                         {
                             Console.WriteLine(" {0} - {1}", token.Substring(0, 8), token.Substring(8));
                         }
@@ -788,7 +807,31 @@ namespace Application
                                     Console.WriteLine("Connecting to: \"" + server.Hostname + "\" as \"" + server.LastIpAddress + "\" on \"" + server.AvailablePorts.First() + "\" with \"" + server.ValidTokens.Last() + "\" ...");
                                     dynamic Connection = new ClientWebSocket();
                                     Tcp.Client.TryEstablishConnection(ref Connection, IPAddress.Parse(server.LastIpAddress), server.AvailablePorts.First(), server.ValidTokens.Last());
-                                    Tcp.InitListener(Connection);
+                                    Console.WriteLine("server.AvailablePorts: ");
+                                    foreach(var i in server.ValidTokens)
+                                    {
+                                        Console.Write(i + " ");
+                                    }
+                                    var result = Tcp.InitListener(Connection, server.ValidTokens.Last(), server.ValidTokens.ElementAt(server.ValidTokens.IndexOf(server.ValidTokens.Last())-1));
+                                    if (result == true)
+                                    {
+                                        Task.Run(() =>
+                                        {
+                                            while (true)
+                                            {
+                                                Console.WriteLine();
+                                                try
+                                                {
+                                                    Tcp.InitListener(Connection);
+                                                }
+                                                catch
+                                                {
+                                                    break;
+                                                    //Console.WriteLine("DISCONNECTED!!!!!!!!");
+                                                }
+                                            }
+                                        });
+                                    }
                                     //System.Diagnostics.Debugger.Break();
                                     break;
                                 }
