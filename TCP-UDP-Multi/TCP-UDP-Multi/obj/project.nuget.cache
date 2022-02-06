@@ -1,15 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "piLIxBPFVmTSNp7S/+2tyhhT2n2Qg5f8EkM2MNqWCqStHI+rbaitGS64AaDN4e8hBpNTDuSmZqkwGUfqrSAJbQ==",
+  "dgSpecHash": "VobVNKhRRzWCZ8UL5RHfx0WgenbUx0twb+FU0HZbG04afFYvb1yvwFgOnLymHpjHX/ckv7LwXmT4yu3zRSi8Xg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Oskar\\source\\repos\\TCP-UDP-Multi\\TCP-UDP-Multi\\TCP-UDP-Multi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Oskar\\.nuget\\packages\\commandlineparser\\2.8.0\\commandlineparser.2.8.0.nupkg.sha512",
     "C:\\Users\\Oskar\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
-    "C:\\Users\\Oskar\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
-    "C:\\Users\\Oskar\\.nuget\\packages\\microsoft.netcore.app.runtime.linux-arm\\5.0.13\\microsoft.netcore.app.runtime.linux-arm.5.0.13.nupkg.sha512",
-    "C:\\Users\\Oskar\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.linux-arm\\5.0.13\\microsoft.aspnetcore.app.runtime.linux-arm.5.0.13.nupkg.sha512",
-    "C:\\Users\\Oskar\\.nuget\\packages\\microsoft.netcore.app.host.linux-arm\\5.0.13\\microsoft.netcore.app.host.linux-arm.5.0.13.nupkg.sha512"
+    "C:\\Users\\Oskar\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
   ],
   "logs": []
 }

@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 #pragma warning disable CA2211 // Nekonstantní pole nemají být viditelná.
-//#pragma warning disable CA1845 // Použít øetìzec založený na rozsahu string.Concat
+#pragma warning disable CA1845 // Použít øetìzec založený na rozsahu string.Concat
 #pragma warning disable IDE0090 // Použít new(...)
 #pragma warning disable IDE0056 // Použít operátor indexu
 #pragma warning disable IDE0057 // Použít operátor rozsahu
@@ -27,7 +27,7 @@ namespace Application
         public static List<Udp.BroadcastMessage> SendMessages = new List<Udp.BroadcastMessage>();
         public static List<Udp.BroadcastMessage> RecieveMessages = new List<Udp.BroadcastMessage>();
         public static string LocalHostname = Dns.GetHostName();
-        public static IPAddress LocalIP = Tools.GetDefaultIPV4Address(Tools.GetDefaultInterface());
+        public static IPAddress LocalIP = Tools.GetDefaultIPv4Address();
         public static Port[] Ports = new Port[4];
         public class Port
         {
@@ -199,7 +199,6 @@ namespace Application
                     //Console.WriteLine("\nRaw input:\n" + string.Join(" ", RecievedBytes));
 
                     var tmp = Newtonsoft.Json.JsonConvert.DeserializeObject<BroadcastMessage>(Encoding.UTF8.GetString(RecievedBytes, 0, RecievedBytes.Length));
-                    Console.WriteLine();
                     if (tmp != null)
                     {
                         Global.RecieveMessages.Add(tmp);
@@ -270,7 +269,7 @@ namespace Application
         public static Task StartSender(bool DEBUG = false)
         {
             string LocalHostname = Dns.GetHostName();
-            string LocalIP = Tools.GetDefaultIPV4Address(Tools.GetDefaultInterface()).ToString();
+            string LocalIP = Global.LocalIP.ToString();
 
             var Broadcast = new Broadcast(IPAddress.Parse(string.Concat(string.Join(".", IPAddress.Parse(Global.LocalIP.ToString()).GetAddressBytes().Take(3).ToArray()), ".255")), new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp) { EnableBroadcast = true }, Global.Ports[0].Number);
             Global.Ports[0].Active = true;
@@ -532,22 +531,21 @@ namespace Application
                 }
             }
         }
-        public static NetworkInterface GetDefaultInterface()
+        public static IPAddress GetDefaultIPv4Address()
         {
-            var interfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var intf in interfaces)
+            var Interfaces = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (var Interface in Interfaces)
             {
-                if (intf.OperationalStatus != OperationalStatus.Up)
+                if (Interface.OperationalStatus != OperationalStatus.Up)
                 {
                     continue;
                 }
-                if (intf.NetworkInterfaceType == NetworkInterfaceType.Loopback)
+                if (Interface.NetworkInterfaceType == NetworkInterfaceType.Loopback)
                 {
                     continue;
                 }
-
-                var properties = intf.GetIPProperties();
-                if (properties == null)
+                var properties = Interface.GetIPProperties();
+                if (Interface.GetIPProperties() == null)
                 {
                     continue;
                 }
@@ -561,29 +559,13 @@ namespace Application
                 {
                     continue;
                 }
-                return intf;
-            }
-            return NetworkInterface.GetAllNetworkInterfaces()[0];
-        }
-        public static IPAddress GetDefaultIPV4Address(NetworkInterface intf)
-        {
-            if (intf == null)
-            {
-                return IPAddress.Parse("0.0.0.0");
-            }
-            foreach (var address in intf.GetIPProperties().UnicastAddresses)
-            {
-                if (address.Address.AddressFamily != AddressFamily.InterNetwork)
+                if (addresses[0].Address.AddressFamily != AddressFamily.InterNetwork)
                 {
                     continue;
                 }
-                if (address.IsTransient)
-                {
-                    continue;
-                }
-                return address.Address;
+                return Interface.GetIPProperties().UnicastAddresses[0].Address;
             }
-            return IPAddress.Parse("0.0.0.0");
+            return IPAddress.Any;
         }
         public static string NextToken(ref List<string> tokens)
         {
@@ -626,27 +608,25 @@ namespace Application
     }
     class Controller
     {
-        static void Main()
+        public static void Info()
         {
             //Global.DefaultBroadcastPort = 11000;
-            Tools.CheckPorts1(ref Global.Ports);
-
             Console.WriteLine("This PC: [" + Global.LocalHostname + "]");
-
             Console.Write("Ports: [");
             foreach (int port in Global.Ports.Skip(1).Select(port => port.Number))
             {
                 Console.Write(port + ", ");
             }
-            Console.WriteLine("\b\b]\n");
-
-            ////////////////////////////////////////////////////////////////////////////////////////////
+            Console.WriteLine("\b\b]");
+        }
+        public static void StartServers()
+        {
             foreach (int TcpPortPool in Global.Ports.Skip(1).Select(port => port.Number))
             {
                 Task.Run(() =>
                 {
                     Tcp.Servers.Add(Tcp.Server.StartServer(Global.LocalIP, TcpPortPool));
-                    Console.WriteLine("\n TCP-Server started");
+                    Console.WriteLine("\nTCP-Server started");
                     var Server = Tcp.Servers.Last();
                     Task.Run(() =>
                     {
@@ -684,9 +664,8 @@ namespace Application
                                 {
                                     Server = Tcp.Server.StartServer(Global.LocalIP, TcpPort);
                                 }
-                                catch (Exception ex)
+                                catch
                                 {
-                                    Console.WriteLine(ex);
                                 }
                             }
                         }
@@ -701,19 +680,21 @@ namespace Application
                     });
                 });
             }
-            ////////////////////////////////////////////////////////////////////////////////////////////
             Task.Run(() =>
-                {
-                    Udp.StartSender();
-                });
-            Console.WriteLine("\n UDP-Server started");
-
-            ////////////////////////////////////////////////////////////////////////////////////////////
+            {
+                Udp.StartSender();
+            });
+            Console.WriteLine("\nUDP-Server started, Broadcasting now...");
+        }
+        public static void StartListener()
+        {
             Task.Run(() =>
             {
                 Udp.StartListener();
             });
-            Console.WriteLine("\n UDP-Client started");
+        }
+        public static void Controll()
+        {
             while (true)
             {
                 switch (Console.ReadKey(true).Key)
@@ -731,7 +712,7 @@ namespace Application
                     case ConsoleKey.T:
                         string[] tmp = new string[Global.ValidTokens.Count];
                         Global.ValidTokens.CopyTo(tmp);
-                        Console.WriteLine("Valid tokens:");
+                        Console.WriteLine("\nValid tokens:");
                         foreach (string token in tmp)
                         {
                             Console.WriteLine(" {0} - {1}", token.Substring(0, 8), token.Substring(8));
@@ -745,6 +726,46 @@ namespace Application
                 }
             }
         }
+        static void Main()
+        {
+            //BEGIN Setup
+            Tools.CheckPorts1(ref Global.Ports);
+            Info();
+            //END Setup
+
+            //BEGIN Server
+            StartServers();
+            //END Server
+
+            //BEGIN Listener
+            StartListener();
+            //END Listener
+
+            //BEGIN Controll
+            Controll();
+            //END Controll
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /*public static void Main1()
         {
             Tools.CheckPorts(ref Global.ports);

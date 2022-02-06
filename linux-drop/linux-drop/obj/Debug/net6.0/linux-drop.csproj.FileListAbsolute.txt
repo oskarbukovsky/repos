@@ -1,0 +1,15 @@
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\bin\Debug\net6.0\linux-drop.exe
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\bin\Debug\net6.0\linux-drop.deps.json
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\bin\Debug\net6.0\linux-drop.runtimeconfig.json
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\bin\Debug\net6.0\linux-drop.dll
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\bin\Debug\net6.0\ref\linux-drop.dll
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\bin\Debug\net6.0\linux-drop.pdb
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\obj\Debug\net6.0\linux-drop.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\obj\Debug\net6.0\linux-drop.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\obj\Debug\net6.0\linux-drop.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\obj\Debug\net6.0\linux-drop.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\obj\Debug\net6.0\linux-drop.dll
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\obj\Debug\net6.0\ref\linux-drop.dll
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\obj\Debug\net6.0\linux-drop.pdb
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\obj\Debug\net6.0\linux-drop.genruntimeconfig.cache
+C:\Users\Oskar\source\repos\linux-drop\linux-drop\obj\Debug\net6.0\linux-drop.csproj.AssemblyReference.cache
