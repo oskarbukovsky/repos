@@ -93,7 +93,7 @@ class Program
     {
         string input;
         IPAddress ip = IPAddress.Parse("10.0.0.111");
-        int port = 11002;
+        int port = 11001;
         dynamic Connection = new ClientWebSocket();
 
         Console.WriteLine("Looking for server on {0}:{1}, Waiting for a connection...", ip, port);

@@ -22,7 +22,7 @@ namespace Application
 {
     public class Global
     {
-        public const int DefaultBroadcastPort = 12002;
+        public const int DefaultBroadcastPort = 11000;
         public static List<string> ValidTokens = new List<string>();
         public static List<Udp.BroadcastMessage> SendMessages = new List<Udp.BroadcastMessage>();
         public static List<Udp.BroadcastMessage> RecieveMessages = new List<Udp.BroadcastMessage>();
@@ -143,7 +143,12 @@ namespace Application
                     }
                     result = String.Concat(result, "\", \n" +
                     "  \"Alive\": \"" + Alive + "\", \n" +
-                    "  \"AvailablePorts\": \"[" + AvailablePorts[0] + ", " + AvailablePorts[1] + ", " + AvailablePorts[2] + "]\", \n" +
+                    "  \"AvailablePorts\": \"[");
+                    foreach (var i in AvailablePorts)
+                    {
+                        result = String.Concat(result, i + " ");
+                    }
+                    result = String.Concat(result, "\b]\", \n" +
                     "}");
                     return result;
                 }
@@ -194,6 +199,7 @@ namespace Application
                     //Console.WriteLine("\nRaw input:\n" + string.Join(" ", RecievedBytes));
 
                     var tmp = Newtonsoft.Json.JsonConvert.DeserializeObject<BroadcastMessage>(Encoding.UTF8.GetString(RecievedBytes, 0, RecievedBytes.Length));
+                    Console.WriteLine();
                     if (tmp != null)
                     {
                         Global.RecieveMessages.Add(tmp);
@@ -281,9 +287,8 @@ namespace Application
                 IpAddress = LocalIP,
                 Token = Tools.NextToken(ref Global.ValidTokens),
                 BirthMessage = true,
-                AvailablePorts = Global.Ports.Skip(1).Where(port => port.Active == true || port.Promiss == true).Select(port => port.Number).ToArray()
+                AvailablePorts = Global.Ports.Skip(1).Where(port => port.Promiss == true).Select(port => port.Number).ToArray()
             });
-            Console.WriteLine(Global.Ports.Skip(1).ToList().Where(port => port.Active == true || port.Promiss == true));
             SendBroadcastMessage(ref Broadcast, Global.SendMessages.Last());
 
             if (DEBUG == true)
@@ -313,10 +318,6 @@ namespace Application
 
             while (true)
             {
-                //Console.WriteLine("Enter your message: ");
-                //string input = ReadLine();
-                string input = "Test";
-
                 //Tools.CheckPorts(ref ports, Broadcast.Port);
                 Global.SendMessages.Add(new BroadcastMessage
                 {
@@ -324,8 +325,8 @@ namespace Application
                     IpAddress = LocalIP,
                     Token = Tools.NextToken(ref Global.ValidTokens),
                     LastToken = Global.ValidTokens[Global.ValidTokens.Count - 2].Substring(8),
-                    AvailablePorts = Global.Ports.Skip(1).Where(port => port.Active == true || port.Promiss == true).Select(port => port.Number).ToArray(),
-                    Message = input
+                    AvailablePorts = Global.Ports.Skip(1).Where(port => port.Promiss == true).Select(port => port.Number).ToArray(),
+                    Message = String.Empty
                 });
                 SendBroadcastMessage(ref Broadcast, Global.SendMessages.Last());
 
@@ -434,6 +435,8 @@ namespace Application
                         //Console.WriteLine("=====End of client handshake=====\n");
                         var Connection = WebSocket.CreateFromStream(stream, true, "tcp", TimeSpan.FromSeconds(10));
                         server.Stop();
+                        Global.Ports.First(portNumber => portNumber.Number == port).Promiss = false;
+                        Global.Ports.First(portNumber => portNumber.Number == port).Active = true;
                         return Connection;
                     }
                 }
@@ -672,7 +675,7 @@ namespace Application
                                 {
                                     if (Tools.PortInUse(i) == false)
                                     {
-                                        Global.Ports[Array.IndexOf(Global.Ports, TcpPort)] = new Global.Port(i);
+                                        Global.Ports[Array.IndexOf(Global.Ports.Select(port => port.Number).ToArray(), TcpPort)] = new Global.Port(i);
                                         TcpPort = i;
                                         break;
                                     }
