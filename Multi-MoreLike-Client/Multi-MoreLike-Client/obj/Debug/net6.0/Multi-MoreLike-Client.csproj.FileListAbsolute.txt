@@ -1,0 +1,17 @@
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\bin\Debug\net6.0\Multi-MoreLike-Client.exe
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\bin\Debug\net6.0\Multi-MoreLike-Client.deps.json
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\bin\Debug\net6.0\Multi-MoreLike-Client.runtimeconfig.json
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\bin\Debug\net6.0\Multi-MoreLike-Client.dll
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\bin\Debug\net6.0\ref\Multi-MoreLike-Client.dll
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\bin\Debug\net6.0\Multi-MoreLike-Client.pdb
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\obj\Debug\net6.0\Multi-MoreLike-Client.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\obj\Debug\net6.0\Multi-MoreLike-Client.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\obj\Debug\net6.0\Multi-MoreLike-Client.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\obj\Debug\net6.0\Multi-MoreLike-Client.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\obj\Debug\net6.0\Multi-MoreLike-Client.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\obj\Debug\net6.0\Multi-MoreLike-Client.csproj.CopyComplete
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\obj\Debug\net6.0\Multi-MoreLike-Client.dll
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\obj\Debug\net6.0\ref\Multi-MoreLike-Client.dll
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\obj\Debug\net6.0\Multi-MoreLike-Client.pdb
+C:\Users\Oskar\source\repos\Multi-MoreLike-Client\Multi-MoreLike-Client\obj\Debug\net6.0\Multi-MoreLike-Client.genruntimeconfig.cache

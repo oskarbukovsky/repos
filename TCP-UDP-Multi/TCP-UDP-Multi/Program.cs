@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Net.WebSockets;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -22,13 +23,14 @@ namespace Application
 {
     public class Global
     {
-        public const int DefaultBroadcastPort = 11000;
+        public static int MaxClients = 3;
+        public static int DefaultBroadcastPort = 11000;
         public static List<string> ValidTokens = new List<string>();
         public static List<Udp.BroadcastMessage> SendMessages = new List<Udp.BroadcastMessage>();
         public static List<Udp.BroadcastMessage> RecieveMessages = new List<Udp.BroadcastMessage>();
         public static string LocalHostname = Dns.GetHostName();
         public static IPAddress LocalIP = Tools.GetDefaultIPv4Address();
-        public static Port[] Ports = new Port[4];
+        public static List<Port> Ports = new List<Port>();
         public class Port
         {
             private int number = 0;
@@ -37,7 +39,7 @@ namespace Application
             public int Number { get => number; set => number = value; }
             public bool Promiss { get => promiss; set => promiss = value; }
             public bool Active { get => active; set => active = value; }
-            public Port(int PortNumber, bool isPromiss = false, bool isActive = false)
+            public Port(int PortNumber = 0, bool isPromiss = false, bool isActive = false)
             {
                 Number = PortNumber;
                 Promiss = isPromiss;
@@ -268,9 +270,6 @@ namespace Application
 
         public static Task StartSender(bool DEBUG = false)
         {
-            string LocalHostname = Dns.GetHostName();
-            string LocalIP = Global.LocalIP.ToString();
-
             var Broadcast = new Broadcast(IPAddress.Parse(string.Concat(string.Join(".", IPAddress.Parse(Global.LocalIP.ToString()).GetAddressBytes().Take(3).ToArray()), ".255")), new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp) { EnableBroadcast = true }, Global.Ports[0].Number);
             Global.Ports[0].Active = true;
             if (DEBUG == true)
@@ -282,8 +281,8 @@ namespace Application
             //Tools.CheckPorts(ref ports, Broadcast.Port);
             Global.SendMessages.Add(new BroadcastMessage
             {
-                Hostname = LocalHostname,
-                IpAddress = LocalIP,
+                Hostname = Global.LocalHostname,
+                IpAddress = Global.LocalIP.ToString(),
                 Token = Tools.NextToken(ref Global.ValidTokens),
                 BirthMessage = true,
                 AvailablePorts = Global.Ports.Skip(1).Where(port => port.Promiss == true).Select(port => port.Number).ToArray()
@@ -306,8 +305,8 @@ namespace Application
             {
                 Broadcast.Socket.SendTo(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new BroadcastMessage
                 {
-                    Hostname = LocalHostname,
-                    IpAddress = LocalIP,
+                    Hostname = Global.LocalHostname,
+                    IpAddress = Global.LocalIP.ToString(),
                     Token = Tools.NextToken(ref Global.ValidTokens),
                     LastToken = Global.ValidTokens[Global.ValidTokens.Count - 2].Substring(8),
                     TerminationMessage = true
@@ -320,8 +319,8 @@ namespace Application
                 //Tools.CheckPorts(ref ports, Broadcast.Port);
                 Global.SendMessages.Add(new BroadcastMessage
                 {
-                    Hostname = LocalHostname,
-                    IpAddress = LocalIP,
+                    Hostname = Global.LocalHostname,
+                    IpAddress = Global.LocalIP.ToString(),
                     Token = Tools.NextToken(ref Global.ValidTokens),
                     LastToken = Global.ValidTokens[Global.ValidTokens.Count - 2].Substring(8),
                     AvailablePorts = Global.Ports.Skip(1).Where(port => port.Promiss == true).Select(port => port.Number).ToArray(),
@@ -501,25 +500,26 @@ namespace Application
             }
             return inUse;
         }
-        public static void CheckPorts(ref int[] ports, int BroadcastPort = 11000)
+        public static void CheckPorts(ref List<Global.Port> Ports, [Optional] int BroadcastPort)
         {
-            ports = new int[4] { BroadcastPort, 0, 0, 0 };
-            for (int i = 1; i < ports.Length; i++)
+            if (BroadcastPort < 1)
             {
-                for (int j = ports[i - 1] + 1; true; j++)
+                BroadcastPort = Global.DefaultBroadcastPort;
+            }
+            Ports.Add(new Global.Port(BroadcastPort));
+            for (int i = 0; i < Global.MaxClients; i++)
+            {
+                Ports.Add(new Global.Port());
+            }
+            for (int i = BroadcastPort; true; i++)
+            {
+                if (PortInUse(i) == false)
                 {
-                    if (PortInUse(j) == false)
-                    {
-                        ports[i] = j;
-                        break;
-                    }
+                    Ports[0].Number = i;
+                    break;
                 }
             }
-        }
-        public static void CheckPorts1(ref Global.Port[] Ports, int BroadcastPort = Global.DefaultBroadcastPort)
-        {
-            Ports = new Global.Port[4] { new Global.Port(BroadcastPort), new Global.Port(0), new Global.Port(0), new Global.Port(0) };
-            for (int i = 1; i < Ports.Length; i++)
+            for (int i = 1; i < Ports.Count; i++)
             {
                 for (int j = Ports[i - 1].Number + 1; true; j++)
                 {
@@ -606,11 +606,32 @@ namespace Application
             return stringBuilder.ToString();
         }
     }
-    class Controller
+    class Primary
     {
+        static void Main()
+        {
+            //BEGIN Setup
+            Tools.CheckPorts(ref Global.Ports);
+            Info();
+            //END Setup
+
+            //BEGIN Server
+            StartServers();
+            //END Server
+
+            //BEGIN Listener
+            StartListener();
+            //END Listener
+
+            //BEGIN Controll
+            Controll();
+            //END Controll
+
+            //END OF FILE
+            Console.WriteLine("EOF");
+        }
         public static void Info()
         {
-            //Global.DefaultBroadcastPort = 11000;
             Console.WriteLine("This PC: [" + Global.LocalHostname + "]");
             Console.Write("Ports: [");
             foreach (int port in Global.Ports.Skip(1).Select(port => port.Number))
@@ -703,6 +724,7 @@ namespace Application
                         System.Diagnostics.Debugger.Break();
                         break;
                     case ConsoleKey.H:
+                        Console.WriteLine();
                         foreach (var i in Udp.KnownServers.Servers)
                         {
                             Console.WriteLine(i + "\n");
@@ -725,25 +747,6 @@ namespace Application
                         break;
                 }
             }
-        }
-        static void Main()
-        {
-            //BEGIN Setup
-            Tools.CheckPorts1(ref Global.Ports);
-            Info();
-            //END Setup
-
-            //BEGIN Server
-            StartServers();
-            //END Server
-
-            //BEGIN Listener
-            StartListener();
-            //END Listener
-
-            //BEGIN Controll
-            Controll();
-            //END Controll
         }
 
 
