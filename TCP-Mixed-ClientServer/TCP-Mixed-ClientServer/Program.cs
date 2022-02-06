@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -12,7 +13,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 #pragma warning disable CA2211 // Nekonstantní pole nemají být viditelná.
-#pragma warning disable CA1845 // Použít řetězec založený na rozsahu string.Concat
 #pragma warning disable IDE0090 // Použít new(...)
 #pragma warning disable IDE0056 // Použít operátor indexu
 #pragma warning disable IDE0057 // Použít operátor rozsahu
@@ -546,7 +546,90 @@ namespace Application
     {
         static void Main()
         {
-            //System.Diagnostics.Debugger.Break();
+            Tools.CheckPorts(ref Global.ports);
+
+            Console.WriteLine("This PC: [" + Global.LocalHostname + "]");
+
+            Console.Write("Ports: [");
+            foreach (int port in Global.ports)
+            {
+                Console.Write(port + ", ");
+            }
+            Console.WriteLine("\b\b]\n");
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            Task.Run(() =>
+            {
+                Udp.StartSender(true);
+            });
+            Console.WriteLine("\n UDP-Server started");
+
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            foreach (int TcpPortPool in Global.ports.Skip(1))
+            {
+                Task.Run(() =>
+                {
+                    Tcp.Servers.Add(Tcp.Server.StartServer(Global.LocalIP, TcpPortPool));
+                    Console.WriteLine("\n TCP-Server started");
+                    var Server = Tcp.Servers.Last();
+                    Task.Run(() =>
+                    {
+                        var TcpPort = TcpPortPool;
+                        while (true)
+                        {
+                            Console.WriteLine();
+                            try
+                            {
+                                var recieved = Tcp.RecieveSocketMessage(Server).Result;
+                                if (recieved is string)
+                                {
+                                    Console.WriteLine("Output: {0}", recieved.TrimEnd('\0'), String.Join(" ", Encoding.UTF8.GetBytes(recieved)));
+                                }
+                                else
+                                {
+                                    if (Server.State != WebSocketState.Connecting || Server.State != WebSocketState.Open)
+                                    {
+                                        throw new Exception("Closed");
+                                    }
+                                }
+                            }
+                            catch
+                            {
+                                for (int i = Global.ports[0] + 1; ; i++)
+                                {
+                                    if (Tools.PortInUse(i) == false)
+                                    {
+                                        Global.ports[Array.IndexOf(Global.ports, TcpPort)] = i;
+                                        TcpPort = i;
+                                        break;
+                                    }
+                                }
+                                try
+                                {
+                                    Server = Tcp.Server.StartServer(Global.LocalIP, TcpPort);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex);
+                                }
+                            }
+                        }
+                    });
+                    Task.Run(() =>
+                    {
+                        while (true)
+                        {
+                            Tcp.SendSocketMessage(Server, Global.LocalHostname + "_" + DateTime.Now.ToString("HH:mm:ss"));
+                            Thread.Sleep(1000);
+                        }
+                    });
+                });
+            }
+            Console.ReadKey();
+        }
+        public static void Main1()
+        {
             Tools.CheckPorts(ref Global.ports);
 
             Console.WriteLine("This PC: [" + Global.LocalHostname + "]");

@@ -1,0 +1,16 @@
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net6.0\BroadCast.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net6.0\BroadCast.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net6.0\BroadCast.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net6.0\BroadCast.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net6.0\BroadCast.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\bin\Debug\net6.0\BroadCast.exe
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\bin\Debug\net6.0\BroadCast.deps.json
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\bin\Debug\net6.0\BroadCast.runtimeconfig.json
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\bin\Debug\net6.0\BroadCast.dll
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\bin\Debug\net6.0\ref\BroadCast.dll
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net6.0\BroadCast.csproj.CopyComplete
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net6.0\BroadCast.dll
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net6.0\ref\BroadCast.dll
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net6.0\BroadCast.genruntimeconfig.cache
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\bin\Debug\net6.0\LibNoise.NetStandart.dll

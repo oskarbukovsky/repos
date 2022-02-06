@@ -1,0 +1,8 @@
+C:\Users\Oskar\source\repos\TCP-UDP-Multi\TCP-UDP-Multi\bin\Debug\netstandard2.1\TCP-UDP-Multi.deps.json
+C:\Users\Oskar\source\repos\TCP-UDP-Multi\TCP-UDP-Multi\bin\Debug\netstandard2.1\TCP-UDP-Multi.dll
+C:\Users\Oskar\source\repos\TCP-UDP-Multi\TCP-UDP-Multi\obj\Debug\netstandard2.1\TCP-UDP-Multi.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\TCP-UDP-Multi\TCP-UDP-Multi\obj\Debug\netstandard2.1\TCP-UDP-Multi.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\TCP-UDP-Multi\TCP-UDP-Multi\obj\Debug\netstandard2.1\TCP-UDP-Multi.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\TCP-UDP-Multi\TCP-UDP-Multi\obj\Debug\netstandard2.1\TCP-UDP-Multi.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\TCP-UDP-Multi\TCP-UDP-Multi\obj\Debug\netstandard2.1\TCP-UDP-Multi.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\TCP-UDP-Multi\TCP-UDP-Multi\obj\Debug\netstandard2.1\TCP-UDP-Multi.dll

@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "6774c3a6-2c71-49a9-9d45-15deb66eba11": {
+      "ProjectGuid": "6774c3a6-2c71-49a9-9d45-15deb66eba11",
+      "DisplayName": "BroadCast",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Ostatní soubory",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 1
+}

@@ -1,0 +1,11 @@
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net45\BroadCast.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net45\BroadCast.csproj.SuggestedBindingRedirects.cache
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net45\BroadCast.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net45\BroadCast.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net45\BroadCast.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net45\BroadCast.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\bin\Debug\net45\BroadCast.exe.config
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\bin\Debug\net45\BroadCast.exe
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\bin\Debug\net45\Newtonsoft.Json.dll
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net45\BroadCast.csproj.CopyComplete
+C:\Users\Oskar\source\repos\BroadCast\BroadCast\obj\Debug\net45\BroadCast.exe

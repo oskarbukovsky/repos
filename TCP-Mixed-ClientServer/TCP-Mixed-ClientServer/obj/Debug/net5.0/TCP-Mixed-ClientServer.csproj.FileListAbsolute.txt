@@ -1,0 +1,17 @@
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net5.0\TCP-Mixed-ClientServer.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net5.0\TCP-Mixed-ClientServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net5.0\TCP-Mixed-ClientServer.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net5.0\TCP-Mixed-ClientServer.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net5.0\TCP-Mixed-ClientServer.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\bin\Debug\net5.0\TCP-Mixed-ClientServer.exe
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\bin\Debug\net5.0\TCP-Mixed-ClientServer.deps.json
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\bin\Debug\net5.0\TCP-Mixed-ClientServer.runtimeconfig.json
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\bin\Debug\net5.0\TCP-Mixed-ClientServer.runtimeconfig.dev.json
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\bin\Debug\net5.0\TCP-Mixed-ClientServer.dll
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\bin\Debug\net5.0\ref\TCP-Mixed-ClientServer.dll
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\bin\Debug\net5.0\CommandLine.dll
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net5.0\TCP-Mixed-ClientServer.csproj.CopyComplete
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net5.0\TCP-Mixed-ClientServer.dll
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net5.0\ref\TCP-Mixed-ClientServer.dll
+C:\Users\Oskar\source\repos\TCP-Mixed-ClientServer\TCP-Mixed-ClientServer\obj\Debug\net5.0\TCP-Mixed-ClientServer.genruntimeconfig.cache
