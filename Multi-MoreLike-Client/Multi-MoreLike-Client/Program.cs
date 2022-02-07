@@ -436,9 +436,8 @@ namespace Application
             }
             if (recieved is Tcp.HandShake)
             {
-                Console.WriteLine("Token: {0}", recieved.Token);
+                //Auth token send back
                 Tcp.SendSocketMessage(Server, recieved.Token);
-                Console.WriteLine("Send");
             }
             if (recieved is bool)
             {
@@ -725,6 +724,7 @@ namespace Application
                             try
                             {
                                 Tcp.InitListener(Server);
+                                Console.WriteLine("Listener started!");
                             }
                             catch
                             {

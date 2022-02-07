@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -31,6 +32,8 @@ namespace Application
         public static string LocalHostname = Dns.GetHostName();
         public static IPAddress LocalIP = Tools.GetDefaultIPv4Address();
         public static List<Port> Ports = new List<Port>();
+        public static List<MergeSort.ToSort> Works = new List<MergeSort.ToSort>();
+        public static List<MergeSort.ToSort> JobsDone = new List<MergeSort.ToSort>();
         public class Port
         {
             private int number = 0;
@@ -369,13 +372,8 @@ namespace Application
 
                     await Server.ReceiveAsync(bytes, CancellationToken.None);
                     string result = Encoding.UTF8.GetString(bytes).TrimEnd('\0');
-                    Console.WriteLine("\nValid tokens:");
                     string[] tokens = new string[Global.ValidTokens.Count];
                     Global.ValidTokens.CopyTo(tokens);
-                    foreach (string token in tokens)
-                    {
-                        Console.WriteLine(" {0} - {1}", token.Substring(0, 8), token.Substring(8));
-                    }
                     //System.Diagnostics.Debugger.Break();
                     //Console.WriteLine(tokens.ElementAt(tokens.ToList().IndexOf(tokens.First(token => token.Substring(8) == result)) - 1).Substring(0, 8));
                     if (tokens.Select(token => token.Substring(8)).Contains(result))
@@ -437,14 +435,41 @@ namespace Application
                         return false;
                     }
                 }
+                if (recieved.StartsWith("$#W-"))
+                {
+                    //Console.WriteLine("Output1: {0}", recieved);
+                    var work = Newtonsoft.Json.JsonConvert.DeserializeObject<MergeSort.ToSort>(recieved.Substring(4));
+                    Task.Run(() =>
+                    {
+                        MergeSort.Sort(work.Numbers, 0, work.Numbers.Length - 1);
+                        work.Sorted = true;
+                        SendSocketMessage(Server, "$#J-" + Newtonsoft.Json.JsonConvert.SerializeObject(work));
+                    });
+                }
+                if (recieved.StartsWith("$#J-"))
+                {
+                    //Console.WriteLine("Output2: {0}", recieved);
+                    var work = Newtonsoft.Json.JsonConvert.DeserializeObject<MergeSort.ToSort>(recieved.Substring(4));
+                    Global.JobsDone.Add(work);
+                    Console.WriteLine("Sorted Numbers: ");
+                    foreach (int i in work.Numbers)
+                    {
+                        Console.Write(i + " ");
+                    }
+                    Console.WriteLine();
+                    System.Diagnostics.Debugger.Break();
+                }
                 //Upravit aby se odesílalo v nějakým spec tvaru těch 8charakterů, regex na detekci a upravit extra output: {0}
                 Console.WriteLine("Output: {0}", recieved);
             }
             if (recieved is Tcp.HandShake)
             {
-                Console.WriteLine("Token: {0}", recieved.Token);
-                Tcp.SendSocketMessage(Server, "$#T-" + recieved.Token);
-                Console.WriteLine("Send");
+                //Auth token send back
+                Tcp.SendSocketMessage(Server, recieved.Token);
+                Task.Run(() =>
+                {
+                    Tcp.InitListener(Server);
+                });
                 Thread.Sleep(5000);
                 while (true)
                 {
@@ -684,12 +709,110 @@ namespace Application
             return stringBuilder.ToString();
         }
     }
+    public class MergeSort
+    {
+        public class ToSort
+        {
+            public int[] Numbers { get; set; }
+            public bool Sorted { get; set; }
+            public ToSort(int[] numbers)
+            {
+                Numbers = numbers;
+                Sorted = false;
+            }
+        }
+        // Merges two subarrays of []arr.
+        // First subarray is arr[l..m]
+        // Second subarray is arr[m+1..r]
+        public static void Merge(int[] arr, int l, int m, int r)
+        {
+            // Find sizes of two
+            // subarrays to be merged
+            int n1 = m - l + 1;
+            int n2 = r - m;
+
+            // Create temp arrays
+            int[] L = new int[n1];
+            int[] R = new int[n2];
+            int i, j;
+
+            // Copy data to temp arrays
+            for (i = 0; i < n1; ++i)
+                L[i] = arr[l + i];
+            for (j = 0; j < n2; ++j)
+                R[j] = arr[m + 1 + j];
+
+            // Merge the temp arrays
+
+            // Initial indexes of first
+            // and second subarrays
+            i = 0;
+            j = 0;
+
+            // Initial index of merged
+            // subarray array
+            int k = l;
+            while (i < n1 && j < n2)
+            {
+                if (L[i] <= R[j])
+                {
+                    arr[k] = L[i];
+                    i++;
+                }
+                else
+                {
+                    arr[k] = R[j];
+                    j++;
+                }
+                k++;
+            }
+
+            // Copy remaining elements
+            // of L[] if any
+            while (i < n1)
+            {
+                arr[k] = L[i];
+                i++;
+                k++;
+            }
+
+            // Copy remaining elements
+            // of R[] if any
+            while (j < n2)
+            {
+                arr[k] = R[j];
+                j++;
+                k++;
+            }
+        }
+
+        // Main function that
+        // sorts arr[l..r] using
+        // merge()
+        public static void Sort(int[] arr, int l, int r)
+        {
+            if (l < r)
+            {
+                // Find the middle
+                // point
+                int m = l + (r - l) / 2;
+
+                // Sort first and
+                // second halves
+                Sort(arr, l, m);
+                Sort(arr, m + 1, r);
+
+                // Merge the sorted halves
+                Merge(arr, l, m, r);
+            }
+        }
+    }
     class Primary
     {
         static void Main()
         {
             //BEGIN Setup
-            Global.LocalHostname = "oskar-desktop:" + BitConverter.ToInt32(Tools.GenerateRandomData(), 0).ToString("x2").Substring(0, 4);
+            Global.LocalHostname = String.Concat(Global.LocalHostname + ":", BitConverter.ToInt32(Tools.GenerateRandomData(), 0).ToString("x2").Substring(0, 4));
             Tools.CheckPorts(ref Global.Ports, 11000);
             Info();
             //END Setup
@@ -775,12 +898,48 @@ namespace Application
                 Udp.StartListener();
             });
         }
+        public static void Sort()
+        {
+            int MaxNumbers = 30;
+            int ShowNumbers = 10;
+            int[] Numbers = new int[MaxNumbers];
+            Random rand = new Random();
+            for (int i = 0; i < Numbers.Length; i++)
+            {
+                Numbers[i] = rand.Next(0, 1000000);
+            }
+
+            Console.WriteLine("\nFirst {0} numbers:", ShowNumbers);
+            for (int i = 0; i < Numbers.Length && i < ShowNumbers; i++)
+            {
+                Console.Write(Numbers[i] + " ");
+            }
+            Console.WriteLine("#");
+
+            Global.Works.Add(new MergeSort.ToSort(Numbers));
+
+            //MergeSort.Sort(Numbers, 0, Numbers.Length - 1);
+
+            Console.WriteLine("\nFirst {0} sorted numbers:", ShowNumbers);
+            for (int i = 0; i < Numbers.Length && i < ShowNumbers; i++)
+            {
+                Console.Write(Numbers[i] + " ");
+            }
+            Console.WriteLine("#");
+
+            //System.Diagnostics.Debugger.Break();
+        }
         public static void Controll()
         {
+            Thread.Sleep(300);
+            Console.WriteLine("Press [S] to start processing random numbers.");
             while (true)
             {
                 switch (Console.ReadKey(true).Key)
                 {
+                    case ConsoleKey.S:
+                        Sort();
+                        break;
                     case ConsoleKey.D:
                         System.Diagnostics.Debugger.Break();
                         break;
@@ -815,6 +974,20 @@ namespace Application
                                     Console.WriteLine("Connecting to: \"" + server.Hostname + "\" as \"" + server.LastIpAddress + "\" on \"" + server.AvailablePorts.First() + "\" with \"" + Tokens[Tokens.Length - 1] + "\" ...");
                                     dynamic Connection = new ClientWebSocket();
                                     Tcp.Client.TryEstablishConnection(ref Connection, IPAddress.Parse(server.LastIpAddress), server.AvailablePorts.First(), Tokens[Tokens.Length - 1]); var result = Tcp.InitListener(Connection, Tokens[Tokens.Length - 1], Tokens.ElementAt(Tokens.Length - 2));
+
+                                    Console.WriteLine("ReadyToSendJob!");
+                                    MergeSort.ToSort work = Global.Works.Last();
+                                    Global.Works.RemoveAt(Global.Works.IndexOf(work));
+                                    try
+                                    {
+                                        Tcp.SendSocketMessage(Connection, "$#W-" + Newtonsoft.Json.JsonConvert.SerializeObject(work));
+                                        Console.WriteLine("JobOfferMayBeSend!");
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine("Kur*!!§");
+                                    }
+
                                     if (result == true)
                                     {
                                         Task.Run(() =>
@@ -840,15 +1013,6 @@ namespace Application
                                 Thread.Sleep(5);
                             }
                         });
-
-                        /*var server = Udp.KnownServers.Servers.Where(server => server.Alive == true && server.Hostname != Global.LocalHostname && server.ValidTokens.Count < 1).OrderByDescending(server => server.AvailablePorts.Length).ToList().First();
-                        Console.WriteLine("Connecting to: \"" + server.Hostname + "\" as \"" + server.LastIpAddress + "\" on \"" + server.AvailablePorts.First() + "\" with \"" + server.ValidTokens.Last() + "\" ...");
-                        Task.Run(() =>
-                        {
-                            dynamic Connection = new ClientWebSocket();
-                            Tcp.Client.TryEstablishConnection(ref Connection, IPAddress.Parse(server.LastIpAddress), server.AvailablePorts.First());
-                            Tcp.SendSocketMessage(Connection, server.ValidTokens.Last());
-                        });*/
                         break;
                     case ConsoleKey.Q:
                         return;
@@ -858,168 +1022,5 @@ namespace Application
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*public static void Main1()
-        {
-            Tools.CheckPorts(ref Global.ports);
-
-            Console.WriteLine("This PC: [" + Global.LocalHostname + "]");
-
-            Console.Write("Ports: [");
-            foreach (int port in Global.ports)
-            {
-                Console.Write(port + ", ");
-            }
-            Console.WriteLine("\b\b]\n");
-
-            Console.Write("TCP(P2P) or UDP(Broadcast): [U/T]: default TCP:\t");
-            switch (Console.ReadKey().Key)
-            {
-                case ConsoleKey.U:
-                    Console.Write("\nServer or Client: [S/C]: default Server:\t");
-                    switch (Console.ReadKey(true).Key)
-                    {
-                        default:
-                        case ConsoleKey.S:
-                            Console.WriteLine("\n UDP-Server");
-                            Task.Run(() =>
-                            {
-                                Udp.StartSender();
-                            });
-                            break;
-                        case ConsoleKey.C:
-                            Console.WriteLine("\n UDP-Client");
-                            Task.Run(() =>
-                            {
-                                Udp.StartListener(true);
-                            });
-                            break;
-                    }
-                    break;
-                default:
-                case ConsoleKey.T:
-                    Console.Write("\nServer or Client: [S/C]: default Server:\t");
-                    switch (Console.ReadKey().Key)
-                    {
-                        default:
-                        case ConsoleKey.S:
-                            Console.WriteLine("\n TCP-Server");
-                            foreach (int TcpPortPool in Global.ports.Skip(1))
-                            {
-                                Task.Run(() =>
-                                {
-                                    Tcp.Servers.Add(Tcp.Server.StartServer(Global.LocalIP, TcpPortPool));
-                                    var Server = Tcp.Servers.Last();
-                                    Task.Run(() =>
-                                    {
-                                        var TcpPort = TcpPortPool;
-                                        while (true)
-                                        {
-                                            Console.WriteLine();
-                                            try
-                                            {
-                                                var recieved = Tcp.RecieveSocketMessage(Server).Result;
-                                                if (recieved is string)
-                                                {
-                                                    Console.WriteLine("Output: {0}", recieved.TrimEnd('\0'), String.Join(" ", Encoding.UTF8.GetBytes(recieved)));
-                                                }
-                                                else
-                                                {
-                                                    if (Server.State != WebSocketState.Connecting || Server.State != WebSocketState.Open)
-                                                    {
-                                                        throw new Exception("Closed");
-                                                    }
-                                                }
-                                            }
-                                            catch
-                                            {
-                                                for (int i = Global.ports[0] + 1; ; i++)
-                                                {
-                                                    if (Tools.PortInUse(i) == false)
-                                                    {
-                                                        Global.ports[Array.IndexOf(Global.ports, TcpPort)] = i;
-                                                        TcpPort = i;
-                                                        break;
-                                                    }
-                                                }
-                                                try
-                                                {
-                                                    Server = Tcp.Server.StartServer(Global.LocalIP, TcpPort);
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    Console.WriteLine(ex);
-                                                }
-                                            }
-                                        }
-                                    });
-                                    Task.Run(() =>
-                                    {
-                                        while (true)
-                                        {
-                                            Tcp.SendSocketMessage(Server, Global.LocalHostname + "_" + DateTime.Now.ToString("HH:mm:ss"));
-                                            Thread.Sleep(1000);
-                                        }
-                                    });
-                                });
-                            }
-                            break;
-                        case ConsoleKey.C:
-                            Console.WriteLine("\n TCP-Client");
-                            break;
-                    }
-                    break;
-            }
-            while (true)
-            {
-                switch (Console.ReadKey(true).Key)
-                {
-                    case ConsoleKey.D:
-                        System.Diagnostics.Debugger.Break();
-                        break;
-                    case ConsoleKey.H:
-                        foreach (var i in Udp.KnownServers.Servers)
-                        {
-                            Console.WriteLine(i + "\n");
-                        }
-                        Console.WriteLine("-----------");
-                        break;
-                    case ConsoleKey.T:
-                        string[] tmp = new string[Global.ValidTokens.Count];
-                        Global.ValidTokens.CopyTo(tmp);
-                        Console.WriteLine("Valid tokens:");
-                        foreach (string token in tmp)
-                        {
-                            Console.WriteLine(" {0} - {1}", token.Substring(0, 8), token.Substring(8));
-                        }
-                        break;
-                    case ConsoleKey.Q:
-                        return;
-                    default:
-                        Thread.Sleep(5);
-                        break;
-                }
-            }
-        }*/
     }
 }
