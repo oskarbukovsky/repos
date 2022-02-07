@@ -410,15 +410,15 @@ namespace Application
             }
             Thread.Sleep(5);
         }
-        public static dynamic InitListener(dynamic Server, [Optional] string ValidToken, [Optional] string CheckToken)
+        public static dynamic InitListener(dynamic Server, [Optional] string NewTokenToCompare, [Optional] string OldTokenForHash)
         {
             var recieved = Tcp.RecieveSocketMessage(Server).Result;
             if (recieved is string)
             {
                 if (recieved.StartsWith("$#T-"))
                 {
-                    var tmp = Tools.Hash(recieved.Substring(4) + CheckToken);
-                    if (tmp == ValidToken)
+                    var tmp = Tools.Hash(recieved.Substring(4) + OldTokenForHash);
+                    if (tmp == NewTokenToCompare)
                     {
                         Console.WriteLine("HandShake Completed\nValid connection :)");
                         return true;
@@ -427,7 +427,7 @@ namespace Application
                     {
                         //TODO občas novější token než kontrolní, má být vždy handshake + starší 
                         //Když je with "xxxxxx" prostřední v validtokens, tak je validtoken ten obrácenej
-                        tConsole.WriteLine("WRONG TOKEN!!!!!!!!!!!");
+                        Console.WriteLine("WRONG TOKEN!!!!!!!!!!!");
                         return false;
                     }
                 }
@@ -523,8 +523,9 @@ namespace Application
                 try
                 {
                     await Connection.ConnectAsync(new Uri("ws://" + ip + ":" + port), CancellationToken.None);
-                    Tcp.SendSocketMessage(Connection, token);
                     Console.WriteLine("\nServer reached!");
+                    Tcp.SendSocketMessage(Connection, token);
+                    Console.WriteLine("\nToken send!");
                 }
                 catch
                 {
@@ -800,19 +801,15 @@ namespace Application
                         {
                             while (true)
                             {
+                                Console.WriteLine("Searching for server...");
                                 if (Udp.KnownServers.Servers.Where(server => server.Alive == true && server.Hostname != Global.LocalHostname && server.ValidTokens.Count > 1).Any())
                                 {
                                     var server = Udp.KnownServers.Servers.Where(server => server.Alive == true && server.Hostname != Global.LocalHostname && server.ValidTokens.Count > 1).OrderByDescending(server => server.AvailablePorts.Length).ToList().First();
-
-                                    Console.WriteLine("Connecting to: \"" + server.Hostname + "\" as \"" + server.LastIpAddress + "\" on \"" + server.AvailablePorts.First() + "\" with \"" + server.ValidTokens.Last() + "\" ...");
+                                    string[] Tokens = new string[server.ValidTokens.Count];
+                                    server.ValidTokens.CopyTo(Tokens);
+                                    Console.WriteLine("Connecting to: \"" + server.Hostname + "\" as \"" + server.LastIpAddress + "\" on \"" + server.AvailablePorts.First() + "\" with \"" + Tokens[Tokens.Length - 1] + "\" ...");
                                     dynamic Connection = new ClientWebSocket();
-                                    Tcp.Client.TryEstablishConnection(ref Connection, IPAddress.Parse(server.LastIpAddress), server.AvailablePorts.First(), server.ValidTokens.Last());
-                                    Console.WriteLine("server.AvailablePorts: ");
-                                    foreach(var i in server.ValidTokens)
-                                    {
-                                        Console.Write(i + " ");
-                                    }
-                                    var result = Tcp.InitListener(Connection, server.ValidTokens.Last(), server.ValidTokens.ElementAt(server.ValidTokens.IndexOf(server.ValidTokens.Last())-1));
+                                    Tcp.Client.TryEstablishConnection(ref Connection, IPAddress.Parse(server.LastIpAddress), server.AvailablePorts.First(), Tokens[Tokens.Length - 1]); var result = Tcp.InitListener(Connection, Tokens[Tokens.Length - 1], Tokens.ElementAt(Tokens.Length - 2));
                                     if (result == true)
                                     {
                                         Task.Run(() =>

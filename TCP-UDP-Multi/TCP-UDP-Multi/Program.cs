@@ -24,7 +24,7 @@ namespace Application
     public class Global
     {
         public static int MaxClients = 3;
-        public static int DefaultBroadcastPort = 11000;
+        public const int DefaultBroadcastPort = 11000;
         public static List<string> ValidTokens = new List<string>();
         public static List<Udp.BroadcastMessage> SendMessages = new List<Udp.BroadcastMessage>();
         public static List<Udp.BroadcastMessage> RecieveMessages = new List<Udp.BroadcastMessage>();
@@ -181,9 +181,8 @@ namespace Application
         }
         public static void StartListener(bool DEBUG = false)
         {
-            UdpClient listener = new UdpClient(Global.DefaultBroadcastPort);
-            IPEndPoint EndPoint = new IPEndPoint(IPAddress.Any, 0);
-
+            IPEndPoint EndPoint = new IPEndPoint(IPAddress.Any, Global.DefaultBroadcastPort);
+            UdpClient listener = new UdpClient(EndPoint);
             try
             {
                 while (true)
@@ -345,6 +344,14 @@ namespace Application
     }
     public class Tcp
     {
+        public class HandShake
+        {
+            public string Token { get; set; }
+            public HandShake(string token)
+            {
+                Token = token;
+            }
+        }
         public static async Task<dynamic> RecieveSocketMessage(dynamic Server)
         {
             byte[] bytes = new byte[8192];
@@ -352,7 +359,31 @@ namespace Application
             {
                 if (Server.State == WebSocketState.Open || Server.State == WebSocketState.CloseSent)
                 {
+                    /*string[] tokens = new string[Global.ValidTokens.Count];
+                      Global.ValidTokens.CopyTo(tokens);
+                      Console.WriteLine("\nValid tokens:");
+                      foreach (string token in tokens)
+                      {
+                          Console.WriteLine(" {0} - {1}", token.Substring(0, 8), token.Substring(8));
+                      }*/
+
                     await Server.ReceiveAsync(bytes, CancellationToken.None);
+                    string result = Encoding.UTF8.GetString(bytes).TrimEnd('\0');
+                    Console.WriteLine("\nValid tokens:");
+                    string[] tokens = new string[Global.ValidTokens.Count];
+                    Global.ValidTokens.CopyTo(tokens);
+                    foreach (string token in tokens)
+                    {
+                        Console.WriteLine(" {0} - {1}", token.Substring(0, 8), token.Substring(8));
+                    }
+                    //System.Diagnostics.Debugger.Break();
+                    //Console.WriteLine(tokens.ElementAt(tokens.ToList().IndexOf(tokens.First(token => token.Substring(8) == result)) - 1).Substring(0, 8));
+                    if (tokens.Select(token => token.Substring(8)).Contains(result))
+                    {
+                        return new HandShake(tokens.ElementAt(tokens.ToList().IndexOf(tokens.First(token => token.Substring(8) == result)) - 1).Substring(0, 8));
+                    }
+                    Thread.Sleep(5);
+                    return result;
                 }
                 else
                 {
@@ -364,8 +395,6 @@ namespace Application
                 Thread.Sleep(5);
                 return false;
             }
-            Thread.Sleep(5);
-            return Encoding.UTF8.GetString(bytes);
         }
         public static async void SendSocketMessage(dynamic Server, string input)
         {
@@ -382,9 +411,56 @@ namespace Application
             }
             catch
             {
-                //Console.WriteLine("Cannot send message!");
+                Console.WriteLine("Cannot send message!");
             }
             Thread.Sleep(5);
+        }
+        public static dynamic InitListener(dynamic Server, [Optional] string NewTokenToCompare, [Optional] string OldTokenForHash)
+        {
+            var recieved = Tcp.RecieveSocketMessage(Server).Result;
+            if (recieved is string)
+            {
+                if (recieved.StartsWith("$#T-"))
+                {
+                    var tmp = Tools.Hash(recieved.Substring(4) + OldTokenForHash);
+                    if (tmp == NewTokenToCompare)
+                    {
+                        Console.WriteLine("HandShake Completed\nValid connection :)");
+                        return true;
+                    }
+                    else
+                    {
+                        //TODO obèas novìjší token než kontrolní, má být vždy handshake + starší 
+                        //Když je with "xxxxxx" prostøední v validtokens, tak je validtoken ten obrácenej
+                        Console.WriteLine("WRONG TOKEN!!!!!!!!!!!");
+                        Server.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                        return false;
+                    }
+                }
+                //Upravit aby se odesílalo v nìjakým spec tvaru tìch 8charakterù, regex na detekci a upravit extra output: {0}
+                Console.WriteLine("Output: {0}", recieved);
+            }
+            if (recieved is Tcp.HandShake)
+            {
+                Console.WriteLine("Token: {0}", recieved.Token);
+                Tcp.SendSocketMessage(Server, "$#T-" + recieved.Token);
+                Console.WriteLine("Send");
+                Thread.Sleep(5000);
+                while (true)
+                {
+                    Console.WriteLine("\nEnter your message:");
+                    var input = Tools.ReadLine();
+                    SendSocketMessage(Server, input);
+                }
+            }
+            if (recieved is bool)
+            {
+                if (Server.State != WebSocketState.Connecting || Server.State != WebSocketState.Open)
+                {
+                    throw new Exception("Closed");
+                }
+            }
+            return true;
         }
 
         public static List<WebSocket> Servers = new List<WebSocket>();
@@ -414,7 +490,7 @@ namespace Application
                     string s = Encoding.UTF8.GetString(bytes);
                     if (Regex.IsMatch(s, "^GET", RegexOptions.IgnoreCase))
                     {
-                        Console.WriteLine("=====Handshaking from client=====\n{0}", s);
+                        //Console.WriteLine("=====Handshaking from client=====\n{0}", s);
 
                         string swk = Regex.Match(s, "Sec-WebSocket-Key: (.*)").Groups[1].Value.Trim();
                         string swka = swk + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
@@ -442,25 +518,27 @@ namespace Application
         }
         public class Client
         {
-            static ClientWebSocket TryEstablishConnection(ref dynamic Connection, IPAddress ip, int port)
+            public static ClientWebSocket TryEstablishConnection(ref dynamic Connection, IPAddress ip, int port, string token)
             {
                 Task<bool> Connected;
                 Connection.Options.SetBuffer(8192, 8192);
-                Connected = EstablishConnection(Connection, ip, port);
+                Connected = EstablishConnection(Connection, ip, port, token);
                 while (Connected.Result == false)
                 {
                     Connection = new ClientWebSocket();
                     Connection.Options.SetBuffer(8192, 8192);
-                    Connected = EstablishConnection(Connection, ip, port);
+                    Connected = EstablishConnection(Connection, ip, port, token);
                 }
                 return Connection;
             }
-            public static async Task<bool> EstablishConnection(dynamic Connection, IPAddress ip, int port)
+            public static async Task<bool> EstablishConnection(dynamic Connection, IPAddress ip, int port, string token)
             {
                 try
                 {
                     await Connection.ConnectAsync(new Uri("ws://" + ip + ":" + port), CancellationToken.None);
                     Console.WriteLine("\nServer reached!");
+                    Tcp.SendSocketMessage(Connection, token);
+                    Console.WriteLine("\nToken send!");
                 }
                 catch
                 {
@@ -584,7 +662,7 @@ namespace Application
             }
             return tokens.Last().Substring(8);
         }
-        private static byte[] GenerateRandomData()
+        public static byte[] GenerateRandomData()
         {
             byte[] data = new byte[8192];
             using (var gen = RandomNumberGenerator.Create())
@@ -593,7 +671,7 @@ namespace Application
             }
             return data;
         }
-        static string Hash(string input)
+        public static string Hash(string input)
         {
             var hash = SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(input));
             var stringBuilder = new StringBuilder(hash.Length * 2);
@@ -611,7 +689,8 @@ namespace Application
         static void Main()
         {
             //BEGIN Setup
-            Tools.CheckPorts(ref Global.Ports);
+            Global.LocalHostname = "oskar-desktop:" + BitConverter.ToInt32(Tools.GenerateRandomData(), 0).ToString("x2").Substring(0, 4);
+            Tools.CheckPorts(ref Global.Ports, 11000);
             Info();
             //END Setup
 
@@ -632,6 +711,7 @@ namespace Application
         }
         public static void Info()
         {
+            //Global.DefaultBroadcastPort = 11000;
             Console.WriteLine("This PC: [" + Global.LocalHostname + "]");
             Console.Write("Ports: [");
             foreach (int port in Global.Ports.Skip(1).Select(port => port.Number))
@@ -657,18 +737,7 @@ namespace Application
                             Console.WriteLine();
                             try
                             {
-                                var recieved = Tcp.RecieveSocketMessage(Server).Result;
-                                if (recieved is string)
-                                {
-                                    Console.WriteLine("Output: {0}", recieved.TrimEnd('\0'), String.Join(" ", Encoding.UTF8.GetBytes(recieved)));
-                                }
-                                else
-                                {
-                                    if (Server.State != WebSocketState.Connecting || Server.State != WebSocketState.Open)
-                                    {
-                                        throw new Exception("Closed");
-                                    }
-                                }
+                                Tcp.InitListener(Server);
                             }
                             catch
                             {
@@ -689,14 +758,6 @@ namespace Application
                                 {
                                 }
                             }
-                        }
-                    });
-                    Task.Run(() =>
-                    {
-                        while (true)
-                        {
-                            Tcp.SendSocketMessage(Server, Global.LocalHostname + "_" + DateTime.Now.ToString("HH:mm:ss"));
-                            Thread.Sleep(1000);
                         }
                     });
                 });
@@ -740,6 +801,55 @@ namespace Application
                             Console.WriteLine(" {0} - {1}", token.Substring(0, 8), token.Substring(8));
                         }
                         break;
+                    case ConsoleKey.C:
+                        Task.Run(() =>
+                        {
+                            while (true)
+                            {
+                                Console.WriteLine("Searching for server...");
+                                if (Udp.KnownServers.Servers.Where(server => server.Alive == true && server.Hostname != Global.LocalHostname && server.ValidTokens.Count > 1).Any())
+                                {
+                                    var server = Udp.KnownServers.Servers.Where(server => server.Alive == true && server.Hostname != Global.LocalHostname && server.ValidTokens.Count > 1).OrderByDescending(server => server.AvailablePorts.Length).ToList().First();
+                                    string[] Tokens = new string[server.ValidTokens.Count];
+                                    server.ValidTokens.CopyTo(Tokens);
+                                    Console.WriteLine("Connecting to: \"" + server.Hostname + "\" as \"" + server.LastIpAddress + "\" on \"" + server.AvailablePorts.First() + "\" with \"" + Tokens[Tokens.Length - 1] + "\" ...");
+                                    dynamic Connection = new ClientWebSocket();
+                                    Tcp.Client.TryEstablishConnection(ref Connection, IPAddress.Parse(server.LastIpAddress), server.AvailablePorts.First(), Tokens[Tokens.Length - 1]); var result = Tcp.InitListener(Connection, Tokens[Tokens.Length - 1], Tokens.ElementAt(Tokens.Length - 2));
+                                    if (result == true)
+                                    {
+                                        Task.Run(() =>
+                                        {
+                                            while (true)
+                                            {
+                                                Console.WriteLine();
+                                                try
+                                                {
+                                                    Tcp.InitListener(Connection);
+                                                }
+                                                catch
+                                                {
+                                                    break;
+                                                    //Console.WriteLine("DISCONNECTED!!!!!!!!");
+                                                }
+                                            }
+                                        });
+                                    }
+                                    //System.Diagnostics.Debugger.Break();
+                                    break;
+                                }
+                                Thread.Sleep(5);
+                            }
+                        });
+
+                        /*var server = Udp.KnownServers.Servers.Where(server => server.Alive == true && server.Hostname != Global.LocalHostname && server.ValidTokens.Count < 1).OrderByDescending(server => server.AvailablePorts.Length).ToList().First();
+                        Console.WriteLine("Connecting to: \"" + server.Hostname + "\" as \"" + server.LastIpAddress + "\" on \"" + server.AvailablePorts.First() + "\" with \"" + server.ValidTokens.Last() + "\" ...");
+                        Task.Run(() =>
+                        {
+                            dynamic Connection = new ClientWebSocket();
+                            Tcp.Client.TryEstablishConnection(ref Connection, IPAddress.Parse(server.LastIpAddress), server.AvailablePorts.First());
+                            Tcp.SendSocketMessage(Connection, server.ValidTokens.Last());
+                        });*/
+                        break;
                     case ConsoleKey.Q:
                         return;
                     default:
@@ -748,168 +858,5 @@ namespace Application
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*public static void Main1()
-        {
-            Tools.CheckPorts(ref Global.ports);
-
-            Console.WriteLine("This PC: [" + Global.LocalHostname + "]");
-
-            Console.Write("Ports: [");
-            foreach (int port in Global.ports)
-            {
-                Console.Write(port + ", ");
-            }
-            Console.WriteLine("\b\b]\n");
-
-            Console.Write("TCP(P2P) or UDP(Broadcast): [U/T]: default TCP:\t");
-            switch (Console.ReadKey().Key)
-            {
-                case ConsoleKey.U:
-                    Console.Write("\nServer or Client: [S/C]: default Server:\t");
-                    switch (Console.ReadKey(true).Key)
-                    {
-                        default:
-                        case ConsoleKey.S:
-                            Console.WriteLine("\n UDP-Server");
-                            Task.Run(() =>
-                            {
-                                Udp.StartSender();
-                            });
-                            break;
-                        case ConsoleKey.C:
-                            Console.WriteLine("\n UDP-Client");
-                            Task.Run(() =>
-                            {
-                                Udp.StartListener(true);
-                            });
-                            break;
-                    }
-                    break;
-                default:
-                case ConsoleKey.T:
-                    Console.Write("\nServer or Client: [S/C]: default Server:\t");
-                    switch (Console.ReadKey().Key)
-                    {
-                        default:
-                        case ConsoleKey.S:
-                            Console.WriteLine("\n TCP-Server");
-                            foreach (int TcpPortPool in Global.ports.Skip(1))
-                            {
-                                Task.Run(() =>
-                                {
-                                    Tcp.Servers.Add(Tcp.Server.StartServer(Global.LocalIP, TcpPortPool));
-                                    var Server = Tcp.Servers.Last();
-                                    Task.Run(() =>
-                                    {
-                                        var TcpPort = TcpPortPool;
-                                        while (true)
-                                        {
-                                            Console.WriteLine();
-                                            try
-                                            {
-                                                var recieved = Tcp.RecieveSocketMessage(Server).Result;
-                                                if (recieved is string)
-                                                {
-                                                    Console.WriteLine("Output: {0}", recieved.TrimEnd('\0'), String.Join(" ", Encoding.UTF8.GetBytes(recieved)));
-                                                }
-                                                else
-                                                {
-                                                    if (Server.State != WebSocketState.Connecting || Server.State != WebSocketState.Open)
-                                                    {
-                                                        throw new Exception("Closed");
-                                                    }
-                                                }
-                                            }
-                                            catch
-                                            {
-                                                for (int i = Global.ports[0] + 1; ; i++)
-                                                {
-                                                    if (Tools.PortInUse(i) == false)
-                                                    {
-                                                        Global.ports[Array.IndexOf(Global.ports, TcpPort)] = i;
-                                                        TcpPort = i;
-                                                        break;
-                                                    }
-                                                }
-                                                try
-                                                {
-                                                    Server = Tcp.Server.StartServer(Global.LocalIP, TcpPort);
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    Console.WriteLine(ex);
-                                                }
-                                            }
-                                        }
-                                    });
-                                    Task.Run(() =>
-                                    {
-                                        while (true)
-                                        {
-                                            Tcp.SendSocketMessage(Server, Global.LocalHostname + "_" + DateTime.Now.ToString("HH:mm:ss"));
-                                            Thread.Sleep(1000);
-                                        }
-                                    });
-                                });
-                            }
-                            break;
-                        case ConsoleKey.C:
-                            Console.WriteLine("\n TCP-Client");
-                            break;
-                    }
-                    break;
-            }
-            while (true)
-            {
-                switch (Console.ReadKey(true).Key)
-                {
-                    case ConsoleKey.D:
-                        System.Diagnostics.Debugger.Break();
-                        break;
-                    case ConsoleKey.H:
-                        foreach (var i in Udp.KnownServers.Servers)
-                        {
-                            Console.WriteLine(i + "\n");
-                        }
-                        Console.WriteLine("-----------");
-                        break;
-                    case ConsoleKey.T:
-                        string[] tmp = new string[Global.ValidTokens.Count];
-                        Global.ValidTokens.CopyTo(tmp);
-                        Console.WriteLine("Valid tokens:");
-                        foreach (string token in tmp)
-                        {
-                            Console.WriteLine(" {0} - {1}", token.Substring(0, 8), token.Substring(8));
-                        }
-                        break;
-                    case ConsoleKey.Q:
-                        return;
-                    default:
-                        Thread.Sleep(5);
-                        break;
-                }
-            }
-        }*/
     }
 }

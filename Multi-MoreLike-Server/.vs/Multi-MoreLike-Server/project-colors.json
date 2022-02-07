@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "9e059ee8-7d21-41db-9c4e-eec2ab1b5ebd": {
+      "ProjectGuid": "9e059ee8-7d21-41db-9c4e-eec2ab1b5ebd",
+      "DisplayName": "Multi-MoreLike-Server",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
