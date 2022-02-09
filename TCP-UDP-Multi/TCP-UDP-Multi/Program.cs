@@ -1,3 +1,32 @@
+/**
+ * @description First release version of NetOS
+ * @author Jan Oskar Bukovský <janoskarbukovsky@gmail.com & bukovsky@gchd.cz>
+ * @copyright Jan Oskar Bukovský 2021
+ * @supported {{.NET SDKs installed: 6.0.101}, [Bìhové prostøedí: OS Name: raspbian, OS Version: 10, OS Platform: Linux, RID: linux-arm], [Bìhové prostøedí: OS Name: Windows, OS Version:, 10.0.19042, OS Platform: Windows, RID: win10-x64]}
+ * @version 1.0
+ * @since 09.02.2022
+ * @license MIT 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
+//Import important libraries
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -14,14 +43,17 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+//Ignore some recommended infos
 #pragma warning disable CA2211 // Nekonstantní pole nemají být viditelná.
 #pragma warning disable CA1845 // Použít øetìzec založený na rozsahu string.Concat
 #pragma warning disable IDE0090 // Použít new(...)
 #pragma warning disable IDE0056 // Použít operátor indexu
-#pragma warning disable IDE0057 // Použít operátor rozsahu
+#pragma warning disable IDE0057 // Použít operátor rozsahu  */
 
+//Define my application namespace
 namespace Application
 {
+    //Some variables used in whole project
     public class Global
     {
         public static int MaxClients = 3;
@@ -49,17 +81,9 @@ namespace Application
                 Active = isActive;
             }
         }
-        public static int[] ToBroadCast()
-        {
-            int[] result = new int[4];
-            foreach (var i in Ports.Where(port => port.Active || port.Promiss))
-            {
-                result[0] = i.Number;
-            }
-            return result;
-        }
     }
 
+    //Hosts discovery/broadcast part of program
     public class Udp
     {
         public class BroadcastMessage
@@ -81,6 +105,7 @@ namespace Application
             public bool TerminationMessage { get => terminationMessage; set => terminationMessage = value; }
             public int[] AvailablePorts { get => availablePorts; set => availablePorts = value; }
             public string Message { get => message; set => message = value; }
+            //Some debugging info
             public override string ToString() => "{\n" +
                 "  \"Hostname\": \"" + Hostname + "\", \n" +
                 "  \"IpAddress\": \"" + IpAddress + "\", \n" +
@@ -126,6 +151,7 @@ namespace Application
                 public List<string> Tokens { get => tokens; set => tokens = value; }
                 public bool Alive { get => alive; set => alive = value; }
                 public int[] AvailablePorts { get => availablePorts; set => availablePorts = value; }
+                //Some debugging info
                 public override string ToString()
                 {
                     string result = "{\n" +
@@ -158,6 +184,7 @@ namespace Application
                     return result;
                 }
 
+                //Constructor for known server
                 public Server(string hostname, string lastIpAddress, string lastToken, bool alive, int[] availablePorts)
                 {
                     Hostname = hostname;
@@ -182,6 +209,7 @@ namespace Application
                 }
             }
         }
+        //Listener for exploring other hosts
         public static void StartListener(bool DEBUG = false)
         {
             IPEndPoint EndPoint = new IPEndPoint(IPAddress.Any, Global.DefaultBroadcastPort);
@@ -194,6 +222,8 @@ namespace Application
                     {
                         Console.WriteLine("Waiting for broadcast");
                     }
+
+                    //Actual listenning part of code
                     byte[] RecievedBytes = listener.Receive(ref EndPoint);
 
                     if (DEBUG == true)
@@ -202,16 +232,20 @@ namespace Application
                     }
                     //Console.WriteLine("\nRaw input:\n" + string.Join(" ", RecievedBytes));
 
+                    //Convert recieved message to object
                     var tmp = Newtonsoft.Json.JsonConvert.DeserializeObject<BroadcastMessage>(Encoding.UTF8.GetString(RecievedBytes, 0, RecievedBytes.Length));
                     if (tmp != null)
                     {
                         Global.RecieveMessages.Add(tmp);
+
+                        //Add server to known servers if already didnt exist there
                         if (!KnownServers.Servers.Where(host => host.Hostname == tmp.Hostname).Any())
                         {
                             KnownServers.Servers.Add(new KnownServers.Server(tmp.Hostname, tmp.IpAddress, tmp.Token, !tmp.TerminationMessage, tmp.AvailablePorts));
                         }
                         else
                         {
+                            //If server already been discovered do some update
                             KnownServers.Servers.First(host => host.Hostname == tmp.Hostname).Alive = !tmp.TerminationMessage;
                             KnownServers.Servers.First(host => host.Hostname == tmp.Hostname).AvailablePorts = tmp.AvailablePorts;
                             KnownServers.Servers.First(host => host.Hostname == tmp.Hostname).LastIpAddress = tmp.IpAddress;
@@ -219,10 +253,10 @@ namespace Application
                             {
                                 KnownServers.Servers.First(host => host.Hostname == tmp.Hostname).IpAddressHistory.Add(tmp.IpAddress);
                             };
+                            //Some actions when server close connection
                             if (!tmp.TerminationMessage)
                             {
                                 KnownServers.Servers.First(host => host.Hostname == tmp.Hostname).Tokens.Add(tmp.Token);
-                                //if (KnownServers.Servers.Where(host => host.Hostname == tmp.Hostname).First().Tokens.Count() > 128)
                                 if (KnownServers.Servers.First(host => host.Hostname == tmp.Hostname).Tokens.Count > 8)
                                 {
                                     KnownServers.Servers.First(host => host.Hostname == tmp.Hostname).Tokens.RemoveAt(0);
@@ -256,12 +290,13 @@ namespace Application
             {
                 listener.Close();
             }
-            //return Task.FromResult(true);
         }
+        //Function to actual send informations to network
         public static void SendBroadcastMessage(ref Broadcast Connection, BroadcastMessage Message)
         {
             try
             {
+                //Send object converted to message to broadcast endpoint
                 Connection.Socket.SendTo(Encoding.UTF8.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(Message)), Connection.EndPoint);
             }
             catch
@@ -270,17 +305,14 @@ namespace Application
             }
         }
 
+        //Actual sending method with infinite broadcasting loop
         public static Task StartSender(bool DEBUG = false)
         {
+            //Take broadcast port as endpoint and init broadcast class
             var Broadcast = new Broadcast(IPAddress.Parse(string.Concat(string.Join(".", IPAddress.Parse(Global.LocalIP.ToString()).GetAddressBytes().Take(3).ToArray()), ".255")), new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp) { EnableBroadcast = true }, Global.Ports[0].Number);
             Global.Ports[0].Active = true;
-            if (DEBUG == true)
-            {
-                Console.WriteLine("This PC:\t" + Dns.GetHostName());
-            }
 
-            //First message
-            //Tools.CheckPorts(ref ports, Broadcast.Port);
+            //First message to send
             Global.SendMessages.Add(new BroadcastMessage
             {
                 Hostname = Global.LocalHostname,
@@ -314,11 +346,12 @@ namespace Application
                     TerminationMessage = true
                 })), Broadcast.EndPoint);
             };
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
 
+            //Loop for sending constant status informations into network for clients
             while (true)
             {
-                //Tools.CheckPorts(ref ports, Broadcast.Port);
+                //Fill message that will be send
                 Global.SendMessages.Add(new BroadcastMessage
                 {
                     Hostname = Global.LocalHostname,
@@ -328,6 +361,7 @@ namespace Application
                     AvailablePorts = Global.Ports.Skip(1).Where(port => port.Promiss == true).Select(port => port.Number).ToArray(),
                     Message = String.Empty
                 });
+                //Calling sending method with actual status
                 SendBroadcastMessage(ref Broadcast, Global.SendMessages.Last());
 
                 if (DEBUG == true)
@@ -341,10 +375,12 @@ namespace Application
                     Console.WriteLine("Message sent to the broadcast address!\n");
                 }
 
+                //Sleep function to aware fast cpu intensive loops and didnt overwhelm network
                 Thread.Sleep(2000);
             }
         }
     }
+    //Server-Client connection part of program
     public class Tcp
     {
         public class HandShake
@@ -355,51 +391,55 @@ namespace Application
                 Token = token;
             }
         }
+        //Function to recieve other side message
         public static async Task<dynamic> RecieveSocketMessage(dynamic Server)
         {
             byte[] bytes = new byte[8192];
             try
             {
+                //Check if connection is active
                 if (Server.State == WebSocketState.Open || Server.State == WebSocketState.CloseSent)
                 {
-                    /*string[] tokens = new string[Global.ValidTokens.Count];
-                      Global.ValidTokens.CopyTo(tokens);
-                      Console.WriteLine("\nValid tokens:");
-                      foreach (string token in tokens)
-                      {
-                          Console.WriteLine(" {0} - {1}", token.Substring(0, 8), token.Substring(8));
-                      }*/
-
+                    //Actual recieving part
                     await Server.ReceiveAsync(bytes, CancellationToken.None);
+                    //Decode message
                     string result = Encoding.UTF8.GetString(bytes).TrimEnd('\0');
+                    //Copy valid tokens into another array due to async conflicts
                     string[] tokens = new string[Global.ValidTokens.Count];
                     Global.ValidTokens.CopyTo(tokens);
                     //System.Diagnostics.Debugger.Break();
-                    //Console.WriteLine(tokens.ElementAt(tokens.ToList().IndexOf(tokens.First(token => token.Substring(8) == result)) - 1).Substring(0, 8));
+                    //If connection isnt checked return custom handshake
                     if (tokens.Select(token => token.Substring(8)).Contains(result))
                     {
                         return new HandShake(tokens.ElementAt(tokens.ToList().IndexOf(tokens.First(token => token.Substring(8) == result)) - 1).Substring(0, 8));
                     }
+                    //Sleep function to aware fast cpu intensive loops
                     Thread.Sleep(5);
                     return result;
                 }
                 else
                 {
+                    //Sleep function to aware fast cpu intensive loops
+                    Thread.Sleep(5);
                     throw new Exception("Closed");
                 }
             }
             catch
             {
+                //Sleep function to aware fast cpu intensive loops
                 Thread.Sleep(5);
                 return false;
             }
         }
+        //Function to send message to other side
         public static async void SendSocketMessage(dynamic Server, string input)
         {
             try
             {
+                //Check if connection is active
                 if (Server.State == WebSocketState.Open || Server.State == WebSocketState.CloseSent)
                 {
+                    //Actual sending part
                     await Server.SendAsync(Encoding.UTF8.GetBytes(input), WebSocketMessageType.Text, true, CancellationToken.None);
                 }
                 else
@@ -413,13 +453,18 @@ namespace Application
             }
             Thread.Sleep(5);
         }
+        //Listenning part of S-C connection + handshaking
         public static dynamic InitListener(dynamic Server, [Optional] string NewTokenToCompare, [Optional] string OldTokenForHash)
         {
+            //Call actual recieving method
             var recieved = Tcp.RecieveSocketMessage(Server).Result;
+            //Check if message is text
             if (recieved is string)
             {
+                //Check if message is token from handshake co establish full connection
                 if (recieved.StartsWith("$#T-"))
                 {
+                    //Repeat token generation from older token + handshake secret
                     var tmp = Tools.Hash(recieved.Substring(4) + OldTokenForHash);
                     if (tmp == NewTokenToCompare)
                     {
@@ -428,27 +473,30 @@ namespace Application
                     }
                     else
                     {
-                        //TODO obèas novìjší token než kontrolní, má být vždy handshake + starší 
-                        //Když je with "xxxxxx" prostøední v validtokens, tak je validtoken ten obrácenej
-                        Console.WriteLine("WRONG TOKEN!!!!!!!!!!!");
+                        //Close connection when client send invalid response
+                        Console.WriteLine("WRONG TOKEN!");
                         Server.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
                         return false;
                     }
                 }
+                //Check if message if work offer
                 if (recieved.StartsWith("$#W-"))
                 {
-                    //Console.WriteLine("Output1: {0}", recieved);
+                    //If it is, than decode to work object
                     var work = Newtonsoft.Json.JsonConvert.DeserializeObject<MergeSort.ToSort>(recieved.Substring(4));
+                    //Do actual computing work
                     Task.Run(() =>
                     {
                         MergeSort.Sort(work.Numbers, 0, work.Numbers.Length - 1);
                         work.Sorted = true;
+                        //Return result of computing
                         SendSocketMessage(Server, "$#J-" + Newtonsoft.Json.JsonConvert.SerializeObject(work));
                     });
                 }
+                //Check if message if dome job
                 if (recieved.StartsWith("$#J-"))
                 {
-                    //Console.WriteLine("Output2: {0}", recieved);
+                    //If it is, than decode to done job object
                     var work = Newtonsoft.Json.JsonConvert.DeserializeObject<MergeSort.ToSort>(recieved.Substring(4));
                     Global.JobsDone.Add(work);
                     Console.WriteLine("Sorted Numbers: ");
@@ -459,25 +507,27 @@ namespace Application
                     Console.WriteLine();
                     System.Diagnostics.Debugger.Break();
                 }
-                //Upravit aby se odesílalo v nìjakým spec tvaru tìch 8charakterù, regex na detekci a upravit extra output: {0}
-                Console.WriteLine("Output: {0}", recieved);
+                //Console.WriteLine("Output: {0}", recieved);
             }
+            //Check if message is handshake offer
             if (recieved is Tcp.HandShake)
             {
-                //Auth token send back
+                //Send handshake secret to client
                 Tcp.SendSocketMessage(Server, recieved.Token);
+                //Prepare listenning environment 
                 Task.Run(() =>
                 {
                     Tcp.InitListener(Server);
                 });
-                Thread.Sleep(5000);
+                /*Thread.Sleep(5000);
                 while (true)
                 {
                     Console.WriteLine("\nEnter your message:");
                     var input = Tools.ReadLine();
                     SendSocketMessage(Server, input);
-                }
+                }*/
             }
+            //When some error occurs do 
             if (recieved is bool)
             {
                 if (Server.State != WebSocketState.Connecting || Server.State != WebSocketState.Open)
@@ -487,12 +537,15 @@ namespace Application
             }
             return true;
         }
-
+        //List of active hosting connections
         public static List<WebSocket> Servers = new List<WebSocket>();
+        //Some class to handle server part of connection
         public class Server
         {
+            //Function to start server
             public static WebSocket StartServer(IPAddress ip, int port)
             {
+                //Init
                 var server = new TcpListener(ip, port);
                 server.Start();
                 Global.Ports.First(portNumber => portNumber.Number == port).Promiss = true;
@@ -501,11 +554,13 @@ namespace Application
                 Console.WriteLine("\nA client connected.\n");
                 NetworkStream stream = client.GetStream();
 
-                // enter to an infinite cycle to be able to handle every change in stream
+                // Enter to an infinite cycle to be able to handle every change in stream
                 while (true)
                 {
+                    //While creation stream is empty wait until it fills up
                     while (!stream.DataAvailable)
                     {
+                        //Sleep function to aware fast cpu intensive loops
                         Thread.Sleep(5);
                     }
                     while (client.Available < 3) ; // match against "get"
@@ -513,6 +568,8 @@ namespace Application
                     byte[] bytes = new byte[client.Available];
                     stream.Read(bytes, 0, client.Available);
                     string s = Encoding.UTF8.GetString(bytes);
+
+                    //Check if message recieved match pattern for websocket connection
                     if (Regex.IsMatch(s, "^GET", RegexOptions.IgnoreCase))
                     {
                         //Console.WriteLine("=====Handshaking from client=====\n{0}", s);
@@ -532,8 +589,10 @@ namespace Application
                         //Without valid response, client will break connection
                         stream.Write(response, 0, response.Length);
                         //Console.WriteLine("=====End of client handshake=====\n");
+                        //Create normal connection that i can nicely handle
                         var Connection = WebSocket.CreateFromStream(stream, true, "tcp", TimeSpan.FromSeconds(10));
                         server.Stop();
+                        //Stop stream handled server
                         Global.Ports.First(portNumber => portNumber.Number == port).Promiss = false;
                         Global.Ports.First(portNumber => portNumber.Number == port).Active = true;
                         return Connection;
@@ -541,8 +600,10 @@ namespace Application
                 }
             }
         }
+        //Function to start Client
         public class Client
         {
+            //Function to create connection with server with error to repeat loop
             public static ClientWebSocket TryEstablishConnection(ref dynamic Connection, IPAddress ip, int port, string token)
             {
                 Task<bool> Connected;
@@ -556,10 +617,12 @@ namespace Application
                 }
                 return Connection;
             }
+            //Actual connecting function
             public static async Task<bool> EstablishConnection(dynamic Connection, IPAddress ip, int port, string token)
             {
                 try
                 {
+                    //Actual connection try
                     await Connection.ConnectAsync(new Uri("ws://" + ip + ":" + port), CancellationToken.None);
                     Console.WriteLine("\nServer reached!");
                     Tcp.SendSocketMessage(Connection, token);
@@ -567,7 +630,9 @@ namespace Application
                 }
                 catch
                 {
+                    //If anything gone wrong
                     Console.WriteLine("Cannot reach destination server!");
+                    //Wait until next try 
                     Thread.Sleep(500);
                     return false;
                 }
@@ -575,8 +640,10 @@ namespace Application
             }
         }
     }
+    //Some universal functions used things in code
     public class Tools
     {
+        //Handle .net weird readline errors
         public static string ReadLine()
         {
             var input = Console.ReadLine();
@@ -586,6 +653,8 @@ namespace Application
             }
             return input;
         }
+
+        //Check if port is used by computer
         public static bool PortInUse(int port)
         {
             bool inUse = false;
@@ -603,17 +672,17 @@ namespace Application
             }
             return inUse;
         }
+
+        //Function to populate ports array with availlable ports to use without conflicts
         public static void CheckPorts(ref List<Global.Port> Ports, [Optional] int BroadcastPort)
         {
+            //Handle broadcast port
             if (BroadcastPort < 1)
             {
                 BroadcastPort = Global.DefaultBroadcastPort;
             }
             Ports.Add(new Global.Port(BroadcastPort));
-            for (int i = 0; i < Global.MaxClients; i++)
-            {
-                Ports.Add(new Global.Port());
-            }
+            //Check if broadcast port is in use, if T, increase port number
             for (int i = BroadcastPort; true; i++)
             {
                 if (PortInUse(i) == false)
@@ -622,6 +691,13 @@ namespace Application
                     break;
                 }
             }
+
+            //Add space for Server-Client connections
+            for (int i = 0; i < Global.MaxClients; i++)
+            {
+                Ports.Add(new Global.Port());
+            }
+            //Check if server port is in use, if T, increase port number
             for (int i = 1; i < Ports.Count; i++)
             {
                 for (int j = Ports[i - 1].Number + 1; true; j++)
@@ -634,6 +710,8 @@ namespace Application
                 }
             }
         }
+
+        //Get usable ip address from valid interface
         public static IPAddress GetDefaultIPv4Address()
         {
             var Interfaces = NetworkInterface.GetAllNetworkInterfaces();
@@ -670,23 +748,30 @@ namespace Application
             }
             return IPAddress.Any;
         }
+
+        //Token generation function 
         public static string NextToken(ref List<string> tokens)
         {
+            //Check if its first token, if T, use some random data
             if (tokens.Count == 0)
             {
                 tokens.Add(BitConverter.ToInt32(GenerateRandomData(), 0).ToString("x2").Substring(0, 4) + BitConverter.ToInt32(GenerateRandomData(), 0).ToString("x2").Substring(0, 4) + Hash(BitConverter.ToInt32(GenerateRandomData(), 0).ToString("x2") + BitConverter.ToInt32(GenerateRandomData(), 0).ToString("x2") + BitConverter.ToInt32(GenerateRandomData(), 0).ToString("x2")));
             }
             else
+            //If some token already exist, use it as part of generation to be possible to use secret part as handshake secret
             {
                 tokens.Add(BitConverter.ToInt32(GenerateRandomData(), 0).ToString("x2").Substring(0, 4) + BitConverter.ToInt32(GenerateRandomData(), 0).ToString("x2").Substring(0, 4) + Hash(tokens[tokens.Count - 1]));
             }
 
+            //Check if max number of tokens already exists, if T, remove oldest
             if (tokens.Count > 3)
             {
                 tokens.RemoveAt(0);
             }
             return tokens.Last().Substring(8);
         }
+
+        //Random data generation function
         public static byte[] GenerateRandomData()
         {
             byte[] data = new byte[8192];
@@ -696,6 +781,8 @@ namespace Application
             }
             return data;
         }
+
+        //Hashing function
         public static string Hash(string input)
         {
             var hash = SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(input));
@@ -709,6 +796,8 @@ namespace Application
             return stringBuilder.ToString();
         }
     }
+
+    //Actual work environment
     public class MergeSort
     {
         public class ToSort
@@ -726,8 +815,7 @@ namespace Application
         // Second subarray is arr[m+1..r]
         public static void Merge(int[] arr, int l, int m, int r)
         {
-            // Find sizes of two
-            // subarrays to be merged
+            // Find sizes of two subarrays to be merged
             int n1 = m - l + 1;
             int n2 = r - m;
 
@@ -743,14 +831,11 @@ namespace Application
                 R[j] = arr[m + 1 + j];
 
             // Merge the temp arrays
-
-            // Initial indexes of first
-            // and second subarrays
+            // Initial indexes of first and second subarrays
             i = 0;
             j = 0;
 
-            // Initial index of merged
-            // subarray array
+            // Initial index of merged subarray array
             int k = l;
             while (i < n1 && j < n2)
             {
@@ -767,8 +852,7 @@ namespace Application
                 k++;
             }
 
-            // Copy remaining elements
-            // of L[] if any
+            // Copy remaining elements of L[] if any
             while (i < n1)
             {
                 arr[k] = L[i];
@@ -776,8 +860,7 @@ namespace Application
                 k++;
             }
 
-            // Copy remaining elements
-            // of R[] if any
+            // Copy remaining elements of R[] if any
             while (j < n2)
             {
                 arr[k] = R[j];
@@ -807,6 +890,8 @@ namespace Application
             }
         }
     }
+
+    //Basic space for easy managing
     class Primary
     {
         static void Main()
@@ -830,8 +915,10 @@ namespace Application
             //END Controll
 
             //END OF FILE
-            Console.WriteLine("EOF");
+            Console.WriteLine(":EOF");
         }
+
+        //Debug info
         public static void Info()
         {
             //Global.DefaultBroadcastPort = 11000;
@@ -843,6 +930,8 @@ namespace Application
             }
             Console.WriteLine("\b\b]");
         }
+
+        //Function to create broadcast and Server-Client connections
         public static void StartServers()
         {
             foreach (int TcpPortPool in Global.Ports.Skip(1).Select(port => port.Number))
@@ -891,6 +980,8 @@ namespace Application
             });
             Console.WriteLine("\nUDP-Server started, Broadcasting now...");
         }
+
+        //Function to start listener
         public static void StartListener()
         {
             Task.Run(() =>
@@ -898,6 +989,8 @@ namespace Application
                 Udp.StartListener();
             });
         }
+
+        //Function to prepare for work
         public static void Sort()
         {
             int MaxNumbers = 30;
@@ -929,6 +1022,8 @@ namespace Application
 
             //System.Diagnostics.Debugger.Break();
         }
+
+        //Function to handle user inputs while programm is running
         public static void Controll()
         {
             Thread.Sleep(300);
@@ -985,7 +1080,7 @@ namespace Application
                                     }
                                     catch
                                     {
-                                        Console.WriteLine("Kur*!!§");
+                                        Console.WriteLine("Erros!!§");
                                     }
 
                                     if (result == true)
@@ -1017,6 +1112,7 @@ namespace Application
                     case ConsoleKey.Q:
                         return;
                     default:
+                        //Sleep function to aware fast cpu intensive loops
                         Thread.Sleep(5);
                         break;
                 }
