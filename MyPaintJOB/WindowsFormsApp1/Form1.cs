@@ -125,6 +125,9 @@ namespace WindowsFormsApp1
         {
             // Form pen with the color selected and the size value in tracker
             Pen pen = new Pen(toolStripButton1.BackColor, trackBar1.Value);
+            pen.StartCap = LineCap.Round;
+            pen.EndCap = LineCap.Round;
+            pen.LineJoin = LineJoin.Round;
 
             paintGraphics.DrawLine(pen, lastPoint, currentPoint);
 
@@ -135,6 +138,9 @@ namespace WindowsFormsApp1
         private void DrawShapeInWorkingImage(Point currentPoint)
         {
             Pen pen = new Pen(toolStripButton1.BackColor, trackBar1.Value);
+            pen.StartCap = LineCap.Round;
+            pen.EndCap = LineCap.Round;
+            pen.LineJoin = LineJoin.Round;
 
             workingImage = new Bitmap(paintImage);
             workingGraphics = Graphics.FromImage(workingImage);
@@ -202,7 +208,7 @@ namespace WindowsFormsApp1
                 workingGraphics.DrawRectangle(outLinePen, startPointX, startPointY, shapeWidth, shapeHeight);
             }
 
-            panel1.CreateGraphics().DrawImage(workingImage, 0, 0, panel1.Width, panel1.Height);
+            panel1Graphics.DrawImage(workingImage, 0, 0, panel1.Width, panel1.Height);
         }
 
         //Pen pen = new Pen(new SolidBrush(toolStripButton1.BackColor), trackBar1.Value);
@@ -269,8 +275,7 @@ namespace WindowsFormsApp1
 
             //GC.Collect();
         }
-
-
+        
         private void panel1_PrintPage(System.Object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             Bitmap bitmap = new Bitmap(panel1.Width, panel1.Height);
