@@ -19,3 +19,13 @@ C:\Users\Oskar\Downloads\WindowsFormsApp1 (1)\WindowsFormsApp1\obj\Debug\Windows
 C:\Users\Oskar\Downloads\WindowsFormsApp1 (1)\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
 C:\Users\Oskar\Downloads\WindowsFormsApp1 (1)\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
 C:\Users\Oskar\Downloads\WindowsFormsApp1 (1)\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Application.resources
+C:\Users\bukovsky\Downloads\repos-main (1)\repos-main\MyPaintJOB\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+C:\Users\bukovsky\Downloads\repos-main (1)\repos-main\MyPaintJOB\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+C:\Users\bukovsky\Downloads\repos-main (1)\repos-main\MyPaintJOB\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+C:\Users\bukovsky\Downloads\repos-main (1)\repos-main\MyPaintJOB\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csprojResolveAssemblyReference.cache
+C:\Users\bukovsky\Downloads\repos-main (1)\repos-main\MyPaintJOB\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Application.resources
+C:\Users\bukovsky\Downloads\repos-main (1)\repos-main\MyPaintJOB\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+C:\Users\bukovsky\Downloads\repos-main (1)\repos-main\MyPaintJOB\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.GenerateResource.Cache
+C:\Users\bukovsky\Downloads\repos-main (1)\repos-main\MyPaintJOB\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CoreCompileInputs.cache
+C:\Users\bukovsky\Downloads\repos-main (1)\repos-main\MyPaintJOB\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+C:\Users\bukovsky\Downloads\repos-main (1)\repos-main\MyPaintJOB\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
