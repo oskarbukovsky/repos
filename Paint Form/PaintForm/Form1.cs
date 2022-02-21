@@ -37,11 +37,11 @@ namespace PaintForm
             int height = DrawingArea.Height;
 
             paintImage = new Bitmap(width, height);
-            //panel1.DrawToBitmap(paintImage, new Rectangle(0, 0, width, height));
+            DrawingArea.DrawToBitmap(paintImage, new Rectangle(0, 0, width, height));
 
             paintGraphics = Graphics.FromImage(paintImage);
 
-            paintGraphics.FillRectangle(Brushes.White, 0, 0, width, height);
+            //paintGraphics.FillRectangle(Brushes.White, 0, 0, width, height);
 
             DrawingArea.BackgroundImage = paintImage;
 
@@ -52,13 +52,15 @@ namespace PaintForm
 
         Point lastPoint;
         bool isMouseDown = false;
+        MouseButtons mouseButtonType = MouseButtons.Left;
 
         void Panel1_MouseDown(object sender, MouseEventArgs e)
         {
             lastPoint = e.Location;
+            mouseButtonType = e.Button;
             isMouseDown = true;
         }
-                
+
         void Panel1_MouseMove(object sender, MouseEventArgs e)
         {
             if (isMouseDown)
@@ -95,8 +97,16 @@ namespace PaintForm
 
         private void DrawLineInCanvas(Point currentPoint)
         {
-            // Form pen with the color selected and the size value in tracker
-            Pen pen = new Pen(ForegroundColorPicker.BackColor, SizeBar.Value);
+            Pen pen;
+            if (mouseButtonType == MouseButtons.Left)
+            {
+                // Form pen with the color selected and the size value in tracker
+                pen = new Pen(ForegroundColorPicker.BackColor, SizeBar.Value);
+            }
+            else
+            {
+                pen = new Pen(BackgroundColorPicker.BackColor, SizeBar.Value);
+            }
 
             paintGraphics.DrawLine(pen, lastPoint, currentPoint);
 
@@ -104,7 +114,7 @@ namespace PaintForm
 
             DrawingArea.Refresh();
         }
-        
+
         private readonly ColorDialog ForegroundColorPickerDialog = new ColorDialog();
         private readonly ColorDialog BackgroundColorPickerDialog = new ColorDialog();
 
@@ -112,14 +122,12 @@ namespace PaintForm
         {
             ForegroundColorPickerDialog.ShowDialog();
             ForegroundColorPicker.BackColor = ForegroundColorPickerDialog.Color;
-
         }
 
         private void BackgroundColorPickerButton_Click(object sender, EventArgs e)
         {
             BackgroundColorPickerDialog.ShowDialog();
             BackgroundColorPicker.BackColor = BackgroundColorPickerDialog.Color;
-
         }
 
         Bitmap workingImage;
@@ -127,7 +135,16 @@ namespace PaintForm
 
         private void DrawShapeInWorkingImage(Point currentPoint)
         {
-            Pen pen = new Pen(ForegroundColorPicker.BackColor, SizeBar.Value);
+            Pen pen;
+            if (mouseButtonType == MouseButtons.Left)
+            {
+                // Form pen with the color selected and the size value in tracker
+                pen = new Pen(ForegroundColorPicker.BackColor, SizeBar.Value);
+            }
+            else
+            {
+                pen = new Pen(BackgroundColorPicker.BackColor, SizeBar.Value);
+            }
 
             workingImage = new Bitmap(paintImage);
             workingGraphics = Graphics.FromImage(workingImage);
@@ -186,7 +203,7 @@ namespace PaintForm
             }
 
             // The outline should be shown only if it is not a line and the drawing is on. 
-            if (isMouseDown && selectedShapeButton.Text != "Line") 
+            if (isMouseDown && selectedShapeButton.Text != "Line")
             {
                 // Draw outline while drawing shapes
                 Pen outLinePen = new Pen(ForegroundColorPicker.BackColor)
@@ -198,7 +215,7 @@ namespace PaintForm
             }
 
             DrawingArea.BackgroundImage = workingImage;
-        }        
+        }
 
         Button selectedShapeButton;
 
@@ -244,18 +261,25 @@ namespace PaintForm
 
         private void FileNew(object sender, EventArgs e)
         {
-            DrawingArea.BackgroundImage = null;
+            paintImage = new Bitmap(DrawingArea.Width, DrawingArea.Height);
+            paintGraphics = Graphics.FromImage(paintImage);
+            DrawingArea.BackgroundImage = paintImage;
+            GC.Collect();
         }
         private void FileOpen(object sender, EventArgs e)
         {
             try
             {
-                OpenFileDialog openDialog = new OpenFileDialog();
-                openDialog.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png; *.svg; *.gif)|*.jpg; *.jpeg; *.gif; *.bmp; *.png; *.svg; *.gif";
+                OpenFileDialog openDialog = new OpenFileDialog
+                {
+                    Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png; *.svg; *.gif)|*.jpg; *.jpeg; *.gif; *.bmp; *.png; *.svg; *.gif"
+                };
                 if (openDialog.ShowDialog() == DialogResult.OK)
                 {
-                    //panel1.BackgroundImage = Image.FromFile(openDialog.FileName);
-                    DrawingArea.CreateGraphics().DrawImage(Image.FromFile(openDialog.FileName), 0, 0, DrawingArea.Width, DrawingArea.Height);
+                    paintImage = new Bitmap(Image.FromFile(openDialog.FileName));
+                    paintGraphics = Graphics.FromImage(paintImage);
+                    DrawingArea.BackgroundImage = paintImage;
+                    GC.Collect();
                 }
             }
             catch (Exception)
@@ -264,7 +288,7 @@ namespace PaintForm
             }
         }
 
-        private void DrawingArea_PrintPage(System.Object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        private void DrawingArea_PrintPage(object sender, PrintPageEventArgs e)
         {
             Bitmap bitmap = new Bitmap(DrawingArea.Width, DrawingArea.Height);
             DrawingArea.DrawToBitmap(bitmap, new Rectangle(0, 0, DrawingArea.Width, DrawingArea.Height));
@@ -298,8 +322,10 @@ namespace PaintForm
             DrawingArea.DrawToBitmap(bmp, new Rectangle(0, 0, DrawingArea.Width, DrawingArea.Height));
             try
             {
-                SaveFileDialog saveDialog = new SaveFileDialog();
-                saveDialog.Filter = "Png Image (.png)|*.png|JPG Image (.jpg)|*.jpg|Bitmap Image (.bmp)|*.bmp|Gif Image (.gif)|*.gif";
+                SaveFileDialog saveDialog = new SaveFileDialog
+                {
+                    Filter = "Png Image (.png)|*.png|JPG Image (.jpg)|*.jpg|Bitmap Image (.bmp)|*.bmp|Gif Image (.gif)|*.gif"
+                };
 
                 if (saveDialog.ShowDialog() == DialogResult.OK)
                 {
