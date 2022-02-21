@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
@@ -62,6 +64,11 @@ namespace PaintForm
             lastPoint = e.Location;
             mouseButtonType = e.Button;
             isMouseDown = true;
+
+            if (e.Button == MouseButtons.Middle)
+            {
+                ForegroundColorPicker.BackColor = Color.FromArgb(paintImage.GetPixel(e.X, e.Y).ToArgb());
+            }
         }
 
         void Panel1_MouseMove(object sender, MouseEventArgs e)
@@ -106,10 +113,15 @@ namespace PaintForm
                 // Form pen with the color selected and the size value in tracker
                 pen = new Pen(ForegroundColorPicker.BackColor, SizeBar.Value);
             }
-            else
+            else if (mouseButtonType == MouseButtons.Right)
             {
                 pen = new Pen(BackgroundColorPicker.BackColor, SizeBar.Value);
             }
+            else
+            {
+                return;
+            }
+
             if (RoundCheckbox.Checked)
             {
                 pen.StartCap = LineCap.Round;
@@ -119,7 +131,7 @@ namespace PaintForm
             pen.DashCap = DashCap.Round;
 
             paintGraphics.DrawLine(pen, lastPoint, currentPoint);
-            
+
             //paintGraphics.FillEllipse(pen.Brush, currentPoint.X - SizeBar.Value / 2, currentPoint.Y - SizeBar.Value / 2, SizeBar.Value, SizeBar.Value);
             //paintGraphics.FillRectangle(pen.Brush, currentPoint.X - SizeBar.Value / 2, currentPoint.Y - SizeBar.Value / 2, SizeBar.Value, SizeBar.Value);
 
@@ -154,10 +166,15 @@ namespace PaintForm
                 // Form pen with the color selected and the size value in tracker
                 pen = new Pen(ForegroundColorPicker.BackColor, SizeBar.Value);
             }
-            else
+            else if (mouseButtonType == MouseButtons.Right)
             {
                 pen = new Pen(BackgroundColorPicker.BackColor, SizeBar.Value);
             }
+            else
+            {
+                return;
+            }
+
             if (RoundCheckbox.Checked)
             {
                 pen.StartCap = LineCap.Round;
