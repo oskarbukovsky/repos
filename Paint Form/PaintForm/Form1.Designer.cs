@@ -60,6 +60,7 @@
             this.FillCheckbox = new System.Windows.Forms.CheckBox();
             this.SwapColorsButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.RoundCheckbox = new System.Windows.Forms.CheckBox();
             this.ControllPanel.SuspendLayout();
             this.ToolsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).BeginInit();
@@ -376,11 +377,24 @@
             this.toolStripSeparator6.Name = "toolStripSeparator6";
             this.toolStripSeparator6.Size = new System.Drawing.Size(88, 6);
             // 
+            // RoundCheckbox
+            // 
+            this.RoundCheckbox.AutoSize = true;
+            this.RoundCheckbox.Checked = true;
+            this.RoundCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.RoundCheckbox.Location = new System.Drawing.Point(12, 504);
+            this.RoundCheckbox.Name = "RoundCheckbox";
+            this.RoundCheckbox.Size = new System.Drawing.Size(64, 17);
+            this.RoundCheckbox.TabIndex = 19;
+            this.RoundCheckbox.Text = "Round?";
+            this.RoundCheckbox.UseVisualStyleBackColor = true;
+            // 
             // Malování
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(903, 557);
+            this.Controls.Add(this.RoundCheckbox);
             this.Controls.Add(this.FillCheckbox);
             this.Controls.Add(this.TriangleButton);
             this.Controls.Add(this.CircleButton);
@@ -437,6 +451,7 @@
         private System.Windows.Forms.CheckBox FillCheckbox;
         private System.Windows.Forms.ToolStripButton SwapColorsButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.CheckBox RoundCheckbox;
     }
 }
 

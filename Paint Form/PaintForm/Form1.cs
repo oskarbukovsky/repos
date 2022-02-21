@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,8 @@ namespace PaintForm
             DrawingArea.DrawToBitmap(paintImage, new Rectangle(0, 0, width, height));
 
             paintGraphics = Graphics.FromImage(paintImage);
+
+            paintGraphics.SmoothingMode = SmoothingMode.AntiAlias;
 
             //paintGraphics.FillRectangle(Brushes.White, 0, 0, width, height);
 
@@ -107,8 +110,18 @@ namespace PaintForm
             {
                 pen = new Pen(BackgroundColorPicker.BackColor, SizeBar.Value);
             }
+            if (RoundCheckbox.Checked)
+            {
+                pen.StartCap = LineCap.Round;
+                pen.EndCap = LineCap.Round;
+            }
+            pen.LineJoin = LineJoin.Round;
+            pen.DashCap = DashCap.Round;
 
             paintGraphics.DrawLine(pen, lastPoint, currentPoint);
+            
+            //paintGraphics.FillEllipse(pen.Brush, currentPoint.X - SizeBar.Value / 2, currentPoint.Y - SizeBar.Value / 2, SizeBar.Value, SizeBar.Value);
+            //paintGraphics.FillRectangle(pen.Brush, currentPoint.X - SizeBar.Value / 2, currentPoint.Y - SizeBar.Value / 2, SizeBar.Value, SizeBar.Value);
 
             lastPoint = currentPoint;
 
@@ -145,6 +158,13 @@ namespace PaintForm
             {
                 pen = new Pen(BackgroundColorPicker.BackColor, SizeBar.Value);
             }
+            if (RoundCheckbox.Checked)
+            {
+                pen.StartCap = LineCap.Round;
+                pen.EndCap = LineCap.Round;
+                pen.LineJoin = LineJoin.Round;
+            }
+            pen.DashCap = DashCap.Round;
 
             workingImage = new Bitmap(paintImage);
             workingGraphics = Graphics.FromImage(workingImage);
