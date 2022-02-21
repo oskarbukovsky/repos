@@ -259,6 +259,13 @@ namespace PaintForm
             }
         }
 
+        private void SwapColors(object sender, EventArgs e)
+        {
+            var tmp = ForegroundColorPicker.BackColor;
+            ForegroundColorPicker.BackColor = BackgroundColorPicker.BackColor;
+            BackgroundColorPicker.BackColor = tmp;
+        }
+
         private void FileNew(object sender, EventArgs e)
         {
             paintImage = new Bitmap(DrawingArea.Width, DrawingArea.Height);
@@ -266,6 +273,7 @@ namespace PaintForm
             DrawingArea.BackgroundImage = paintImage;
             GC.Collect();
         }
+
         private void FileOpen(object sender, EventArgs e)
         {
             try

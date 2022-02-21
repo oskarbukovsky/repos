@@ -58,6 +58,8 @@
             this.CircleButton = new System.Windows.Forms.Button();
             this.TriangleButton = new System.Windows.Forms.Button();
             this.FillCheckbox = new System.Windows.Forms.CheckBox();
+            this.SwapColorsButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.ControllPanel.SuspendLayout();
             this.ToolsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SizeBar)).BeginInit();
@@ -180,6 +182,8 @@
             this.ForegroundColorPicker,
             this.toolStripSeparator2,
             this.BackgroundColorPicker,
+            this.toolStripSeparator6,
+            this.SwapColorsButton,
             this.toolStripSeparator3,
             this.toolStripProgressBar2,
             this.toolStripSeparator4,
@@ -248,7 +252,7 @@
             // SizeBar
             // 
             this.SizeBar.LargeChange = 15;
-            this.SizeBar.Location = new System.Drawing.Point(0, 110);
+            this.SizeBar.Location = new System.Drawing.Point(0, 136);
             this.SizeBar.Maximum = 150;
             this.SizeBar.Minimum = 1;
             this.SizeBar.Name = "SizeBar";
@@ -264,7 +268,7 @@
             0,
             0,
             0});
-            this.SizeUpDown.Location = new System.Drawing.Point(0, 162);
+            this.SizeUpDown.Location = new System.Drawing.Point(0, 189);
             this.SizeUpDown.Maximum = new decimal(new int[] {
             150,
             0,
@@ -299,9 +303,9 @@
             // 
             // PenButton
             // 
-            this.PenButton.Location = new System.Drawing.Point(-5, 216);
+            this.PenButton.Location = new System.Drawing.Point(0, 226);
             this.PenButton.Name = "PenButton";
-            this.PenButton.Size = new System.Drawing.Size(92, 45);
+            this.PenButton.Size = new System.Drawing.Size(87, 45);
             this.PenButton.TabIndex = 13;
             this.PenButton.Text = "Pen";
             this.PenButton.UseVisualStyleBackColor = true;
@@ -309,9 +313,9 @@
             // 
             // LineButton
             // 
-            this.LineButton.Location = new System.Drawing.Point(-5, 267);
+            this.LineButton.Location = new System.Drawing.Point(0, 277);
             this.LineButton.Name = "LineButton";
-            this.LineButton.Size = new System.Drawing.Size(92, 45);
+            this.LineButton.Size = new System.Drawing.Size(87, 45);
             this.LineButton.TabIndex = 14;
             this.LineButton.Text = "Line";
             this.LineButton.UseVisualStyleBackColor = true;
@@ -319,7 +323,7 @@
             // 
             // RectangleButton
             // 
-            this.RectangleButton.Location = new System.Drawing.Point(0, 318);
+            this.RectangleButton.Location = new System.Drawing.Point(0, 328);
             this.RectangleButton.Name = "RectangleButton";
             this.RectangleButton.Size = new System.Drawing.Size(87, 45);
             this.RectangleButton.TabIndex = 15;
@@ -329,7 +333,7 @@
             // 
             // CircleButton
             // 
-            this.CircleButton.Location = new System.Drawing.Point(0, 369);
+            this.CircleButton.Location = new System.Drawing.Point(0, 379);
             this.CircleButton.Name = "CircleButton";
             this.CircleButton.Size = new System.Drawing.Size(87, 45);
             this.CircleButton.TabIndex = 16;
@@ -339,7 +343,7 @@
             // 
             // TriangleButton
             // 
-            this.TriangleButton.Location = new System.Drawing.Point(0, 420);
+            this.TriangleButton.Location = new System.Drawing.Point(0, 430);
             this.TriangleButton.Name = "TriangleButton";
             this.TriangleButton.Size = new System.Drawing.Size(87, 45);
             this.TriangleButton.TabIndex = 17;
@@ -350,12 +354,27 @@
             // FillCheckbox
             // 
             this.FillCheckbox.AutoSize = true;
-            this.FillCheckbox.Location = new System.Drawing.Point(12, 471);
+            this.FillCheckbox.Location = new System.Drawing.Point(12, 481);
             this.FillCheckbox.Name = "FillCheckbox";
             this.FillCheckbox.Size = new System.Drawing.Size(65, 17);
             this.FillCheckbox.TabIndex = 18;
             this.FillCheckbox.Text = "Fill Color";
             this.FillCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // SwapColorsButton
+            // 
+            this.SwapColorsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SwapColorsButton.Image = ((System.Drawing.Image)(resources.GetObject("SwapColorsButton.Image")));
+            this.SwapColorsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SwapColorsButton.Name = "SwapColorsButton";
+            this.SwapColorsButton.Size = new System.Drawing.Size(88, 20);
+            this.SwapColorsButton.Text = "Swap Colours";
+            this.SwapColorsButton.Click += new System.EventHandler(this.SwapColors);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(88, 6);
             // 
             // Malování
             // 
@@ -416,6 +435,8 @@
         private System.Windows.Forms.Button CircleButton;
         private System.Windows.Forms.Button TriangleButton;
         private System.Windows.Forms.CheckBox FillCheckbox;
+        private System.Windows.Forms.ToolStripButton SwapColorsButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
     }
 }
 
