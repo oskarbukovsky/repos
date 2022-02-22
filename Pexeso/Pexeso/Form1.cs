@@ -46,7 +46,7 @@ namespace Pexeso
                 };
                 if (openDialog.ShowDialog() == DialogResult.OK)
                 {
-                    tableLayoutPanel1.GetControlFromPosition(0, 3).BackgroundImage = Image.FromFile(openDialog.FileName);
+                    tableLayoutPanel1.GetControlFromPosition(0, 3).BackgroundImage = new Bitmap(Image.FromFile(openDialog.FileName));
                     //tableLayoutPanel1.GetControlFromPosition(0, 3).BackgroundImage = Image.FromFile(@"C:\\Users\\bukovsky\\Downloads\\repos - main(1)\\repos\\Pexeso\\Pexeso\\Imgs\\arci.png");
                     //tableLayoutPanel1.GetControlFromPosition(0, 3).BackgroundImage = Image.FromFile(@"C:\\Users\\Oskar\\source\\repos\\Pexeso\\Pexeso\\Imgs\\arci.png");
                 }
