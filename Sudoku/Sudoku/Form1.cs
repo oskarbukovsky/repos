@@ -12,61 +12,50 @@ namespace BubbleBreaker
 {
     public partial class Form1 : Form
     {
+
+        static int N = 9;
+
         public Form1()
         {
             InitializeComponent();
 
-            tableLayoutPanel1.RowCount = 9;
-            tableLayoutPanel1.ColumnCount = 9;
+            tableLayoutPanel1.RowCount = N;
+            tableLayoutPanel1.ColumnCount = N;
 
-            for (int i = 0; i < tableLayoutPanel1.RowCount; i++)
+            for (int i = 0; i < N; i++)
             {
-                for (int j = 0; j < tableLayoutPanel1.ColumnCount; j++)
+                for (int j = 0; j < N; j++)
                 {
                     TextBox inputbox = new TextBox();
                     //inputbox.Text = i + ":" + j;
+                    inputbox.Width = 32;
+                    inputbox.Height = 32;
+                    inputbox.TextChanged += new EventHandler(check);
                     tableLayoutPanel1.Controls.Add(inputbox, j, i);
                 }
             }
         }
 
-        private void LoadGame(object sender, EventArgs e)
+        public static void check(object sender, EventArgs e)
         {
-            /*OpenFileDialog openDialog = new OpenFileDialog
-            {
-                Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png; *.svg; *.gif)|*.jpg; *.jpeg; *.gif; *.bmp; *.png; *.svg; *.gif"
-            };
-            if (openDialog.ShowDialog() == DialogResult.OK)
-            {
-                pictureBox1.BackgroundImage = new Bitmap(Image.FromFile(openDialog.FileName));
-
-                TableLayoutControlCollection controls = tableLayoutPanel1.Controls;
-                for (int i = 0; i < controls.Count; i++)
-                {
-                    if (controls[i] is Label)
-                    {
-                        controls[i].BackgroundImage = new Bitmap(Image.FromFile(openDialog.FileName));
-                        controls[i].Text = "test" + i;
-                    }
-                }
-            }*/
+            //sender.Text
         }
 
         private void helpToolStripButton_Click(object sender, EventArgs e)
         {
-            int[,] board = new int[tableLayoutPanel1.RowCount, tableLayoutPanel1.ColumnCount];
-            for (int i = 0; i < tableLayoutPanel1.RowCount; i++)
+            int[,] board = new int[N, N];
+            for (int i = 0; i < N; i++)
             {
-                for (int j = 0; j < tableLayoutPanel1.ColumnCount; j++)
+                for (int j = 0; j < N; j++)
                 {
                     board[i, j] = tableLayoutPanel1.GetControlFromPosition(j, i).Text != String.Empty ? Convert.ToInt32(tableLayoutPanel1.GetControlFromPosition(j, i).Text) : 0;
                 }
             }
             if (solveSudoku(board, 0, 0))
             {
-                for (int i = 0; i < tableLayoutPanel1.RowCount; i++)
+                for (int i = 0; i < N; i++)
                 {
-                    for (int j = 0; j < tableLayoutPanel1.ColumnCount; j++)
+                    for (int j = 0; j < N; j++)
                     {
                         tableLayoutPanel1.GetControlFromPosition(j, i).Text = Convert.ToString(board[i, j]);
                     }
@@ -77,8 +66,6 @@ namespace BubbleBreaker
                 System.Diagnostics.Debugger.Break();
             }
         }
-
-        static int N = 9;
 
         /* Takes a partially filled-in grid and attempts
           to assign values to all unassigned locations in
