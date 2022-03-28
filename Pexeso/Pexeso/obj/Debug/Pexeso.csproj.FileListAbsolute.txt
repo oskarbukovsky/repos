@@ -9,3 +9,23 @@ C:\Users\Oskar\source\repos\Pexeso\Pexeso\obj\Debug\Pexeso.csproj.GenerateResour
 C:\Users\Oskar\source\repos\Pexeso\Pexeso\obj\Debug\Pexeso.csproj.CoreCompileInputs.cache
 C:\Users\Oskar\source\repos\Pexeso\Pexeso\obj\Debug\Pexeso.exe
 C:\Users\Oskar\source\repos\Pexeso\Pexeso\obj\Debug\Pexeso.pdb
+C:\Users\bukovsky\Downloads\repos-main (1)\repos\Pexeso\Pexeso\bin\Debug\Pexeso.exe.config
+C:\Users\bukovsky\Downloads\repos-main (1)\repos\Pexeso\Pexeso\bin\Debug\Pexeso.exe
+C:\Users\bukovsky\Downloads\repos-main (1)\repos\Pexeso\Pexeso\bin\Debug\Pexeso.pdb
+C:\Users\bukovsky\Downloads\repos-main (1)\repos\Pexeso\Pexeso\obj\Debug\Pexeso.csprojResolveAssemblyReference.cache
+C:\Users\bukovsky\Downloads\repos-main (1)\repos\Pexeso\Pexeso\obj\Debug\Pexeso.Form1.resources
+C:\Users\bukovsky\Downloads\repos-main (1)\repos\Pexeso\Pexeso\obj\Debug\Pexeso.Properties.Resources.resources
+C:\Users\bukovsky\Downloads\repos-main (1)\repos\Pexeso\Pexeso\obj\Debug\Pexeso.csproj.GenerateResource.Cache
+C:\Users\bukovsky\Downloads\repos-main (1)\repos\Pexeso\Pexeso\obj\Debug\Pexeso.csproj.CoreCompileInputs.cache
+C:\Users\bukovsky\Downloads\repos-main (1)\repos\Pexeso\Pexeso\obj\Debug\Pexeso.exe
+C:\Users\bukovsky\Downloads\repos-main (1)\repos\Pexeso\Pexeso\obj\Debug\Pexeso.pdb
+C:\Users\bukovsky\Downloads\repos\repos\Pexeso\Pexeso\bin\Debug\Pexeso.exe.config
+C:\Users\bukovsky\Downloads\repos\repos\Pexeso\Pexeso\bin\Debug\Pexeso.exe
+C:\Users\bukovsky\Downloads\repos\repos\Pexeso\Pexeso\bin\Debug\Pexeso.pdb
+C:\Users\bukovsky\Downloads\repos\repos\Pexeso\Pexeso\obj\Debug\Pexeso.csprojResolveAssemblyReference.cache
+C:\Users\bukovsky\Downloads\repos\repos\Pexeso\Pexeso\obj\Debug\Pexeso.Form1.resources
+C:\Users\bukovsky\Downloads\repos\repos\Pexeso\Pexeso\obj\Debug\Pexeso.Properties.Resources.resources
+C:\Users\bukovsky\Downloads\repos\repos\Pexeso\Pexeso\obj\Debug\Pexeso.csproj.GenerateResource.Cache
+C:\Users\bukovsky\Downloads\repos\repos\Pexeso\Pexeso\obj\Debug\Pexeso.csproj.CoreCompileInputs.cache
+C:\Users\bukovsky\Downloads\repos\repos\Pexeso\Pexeso\obj\Debug\Pexeso.exe
+C:\Users\bukovsky\Downloads\repos\repos\Pexeso\Pexeso\obj\Debug\Pexeso.pdb
