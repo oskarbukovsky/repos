@@ -1,0 +1,15 @@
+C:\Users\Oskar\source\repos\batoh\batoh\bin\Debug\net6.0\batoh.exe
+C:\Users\Oskar\source\repos\batoh\batoh\bin\Debug\net6.0\batoh.deps.json
+C:\Users\Oskar\source\repos\batoh\batoh\bin\Debug\net6.0\batoh.runtimeconfig.json
+C:\Users\Oskar\source\repos\batoh\batoh\bin\Debug\net6.0\batoh.dll
+C:\Users\Oskar\source\repos\batoh\batoh\bin\Debug\net6.0\ref\batoh.dll
+C:\Users\Oskar\source\repos\batoh\batoh\bin\Debug\net6.0\batoh.pdb
+C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\batoh.csproj.AssemblyReference.cache
+C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\batoh.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\batoh.AssemblyInfoInputs.cache
+C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\batoh.AssemblyInfo.cs
+C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\batoh.csproj.CoreCompileInputs.cache
+C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\batoh.dll
+C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\ref\batoh.dll
+C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\batoh.pdb
+C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\batoh.genruntimeconfig.cache
