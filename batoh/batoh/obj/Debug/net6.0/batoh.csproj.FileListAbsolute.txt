@@ -13,3 +13,6 @@ C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\batoh.dll
 C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\ref\batoh.dll
 C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\batoh.pdb
 C:\Users\Oskar\source\repos\batoh\batoh\obj\Debug\net6.0\batoh.genruntimeconfig.cache
+C:\Users\bukovsky\Downloads\repos\repos\batoh\batoh\bin\Debug\net6.0\batoh.runtimeconfig.json
+C:\Users\bukovsky\Downloads\repos\repos\batoh\batoh\bin\Debug\net6.0\batoh.runtimeconfig.dev.json
+C:\Users\bukovsky\Downloads\repos\repos\batoh\batoh\obj\Debug\net6.0\batoh.pdb

@@ -15,6 +15,7 @@ namespace MyApp
 {
     internal class Program
     {
+        static Random rand = new Random();
         public static string ReadLine()
         {
             var input = Console.ReadLine();
@@ -24,6 +25,7 @@ namespace MyApp
             }
             return input;
         }
+
         class Item
         {
             public int Weight;
@@ -31,7 +33,6 @@ namespace MyApp
             public float Ratio;
             public Item(int maxWeight = 100, int maxValue = 100)
             {
-                Random rand = new Random();
                 Weight = rand.Next(1, maxWeight + 1);
                 Value = rand.Next(1, maxValue + 1); ;
                 Ratio = (float)Value / (float)Weight;
@@ -72,16 +73,16 @@ namespace MyApp
 
             //Console.WriteLine($"{M}, {n}");
 
-            List <Item> Items = new List<Item>();
+            List<Item> Items = new List<Item>();
             for (int i = 0; i < n; i++)
             {
                 Items.Add(new Item(M));
             }
 
             Console.WriteLine("Itemy:");
-            foreach(Item item in Items.OrderByDescending(e => e.Ratio).ThenBy(e => e.Weight))
+            foreach (Item item in Items.OrderByDescending(e => e.Ratio).ThenBy(e => e.Weight))
             {
-                Console.WriteLine("  " + item.Ratio.ToString("0.00") + "\t" + item.Value+ "\t" + item.Weight + " ");
+                Console.WriteLine("  " + item.Ratio.ToString("0.00") + "\t" + item.Value + "\t" + item.Weight + " ");
             }
 
             Backpack backpack = new Backpack(M);
